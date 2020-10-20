@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <div>
-    <p class="SongUploadHeader">JavaScript makes HTML pages more dynamic and interactive.</p>
-    <form className="inputs">
+    User ID (TEMP):&nbsp;
+    <input
+      id="field_uid"
+      className="long"
+      type="text"
+    />
+    <p class="SongUploadHeader">Add a Song</p>
+    <form id="songform" className="inputs">
       Song Title:&nbsp;
       <input
         id="field_trackname"
@@ -10,36 +16,110 @@
         type="text"
       />
       <br /> <br />
-      :&nbsp;
+      Length:&nbsp;
       <input
-        id="field_"
+        id="field_tracklength"
         className="long"
         type="text"
       />
       <br /> <br />
-      :&nbsp;
-      <input
-        id="field_"
+      Genre:&nbsp;      <input
+        id="field_trackgenre"
         className="long"
         type="text"
       />
     </form>
-    <h1>
-    </h1>
-    <div className="">
-      <button type="button" onclick={addSong()}>
-        Upload Content
-      </button>
-    </div>
-    <button onClick={this.submitLP}>Publish</button>
+    <button onclick="addSong()">Add Song</button>
+
+    <p class="ArtistUploadHeader">New Artist</p>
+    <form id="artistform" className="inputs">
+      Artist Name:&nbsp;
+      <input
+        id="field_artistname"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+    </form>
+    <button onclick="addArtist()">Add Artist</button>
+
+    <p class="GroupUploadHeader">New Group</p>
+    <form id="groupform" className="inputs">
+      Artist Name:&nbsp;
+      <input
+        id="field_groupname"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      Length:&nbsp;
+      <input
+        id="field_groupyear"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      Length:&nbsp;
+      <input
+        id="field_grouptype"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+    </form>
+    <button onclick="addGroup()">Add Group</button>
+
+    <p class="AlbumUploadHeader">New Album</p>
+    <form id="artistform" className="inputs">
+      Album Name:&nbsp;
+      <input
+        id="field_albumtitle"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      GID/AID(TEMP):&nbsp;
+      <input
+        id="field_albumcredit"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      Is this a (Group | Artist):&nbsp;
+      <input
+        id="field_credittype"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+    </form>
+    <button onclick="addAlbum()">Add Album</button>
   </div>
-  <p class="intro">JavaScript makes HTML pages more dynamic and interactive.</p>
+  <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
   <script src="jquery-3.5.1.js"></script>
   <script>
     function addSong() {
-      document.getElementsByClassName("").t
+      //null safety later
+      var user = document.getElementById("field_uid").value
+      var trackname = document.getElementById("field_trackname").value
+      var length = document.getElementById("field_tracklength").value
+      var genre = document.getElementById("field_trackgenre").value
+      console.log(user, trackname, length, genre)
+      url = "./the php path?"
+      console.log(url.concat("uid=", user, "name=", name, "length=", length, "genre=", genre))
+      //$.get()
     }
-    </script>  
+
+    function addArtist() {
+
+    }
+    function addGroup() {
+
+    }
+    function addAlbum() {
+      //will need to bunch these all up into one compound request, but for now...
+    }
+  </script>  
   <!-- 
     <script>
     function verify(elmnt,clr) {
