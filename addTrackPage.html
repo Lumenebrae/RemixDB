@@ -23,7 +23,7 @@
         type="text"
       />
       <br /> <br />
-      Genre:&nbsp;      
+      Genre:&nbsp;
       <input
         id="field_trackgenre"
         className="long"
@@ -97,18 +97,22 @@
     <button onclick="addAlbum()">Add Album</button>
   </div>
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
-  <script src="jquery-3.5.1.js"></script>
+  <script src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     function addSong() {
       //null safety later
-      var user = document.getElementById("field_uid").value
-      var trackname = document.getElementById("field_trackname").value
-      var length = document.getElementById("field_tracklength").value
-      var genre = document.getElementById("field_trackgenre").value
-      console.log(user, trackname, length, genre)
-      url = "./the php path?"
-      console.log(url.concat("uid=", user, "name=", name, "length=", length, "genre=", genre))
-      //$.get()
+      var user = document.getElementById("field_uid").value;
+      var trackname = document.getElementById("field_trackname").value;
+      var length = document.getElementById("field_tracklength").value;
+      var genre = document.getElementById("field_trackgenre").value;
+
+
+      var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_0";
+      downloadUrl(url, function(data) {
+
+      var xml = data.responseXML;
+      console.log(xml);
+      });
     }
 
     function addArtist() {
@@ -120,8 +124,30 @@
     function addAlbum() {
       //will need to bunch these all up into one compound request, but for now...
     }
-  </script>  
-  <!-- 
+
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+  <!--
     <script>
     function verify(elmnt,clr) {
       elmnt.style.color = clr;
