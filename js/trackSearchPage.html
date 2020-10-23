@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <div style="text-align: right;"><button type="button">View Profile</button></div>
+    <h1 style="text-align: center;">REMIX DB</h1>
+      <div style="text-align: center;"><input id="searchField" classname="long" type="text" onkeyup="searchSongs()" />
+        <select name="Search Type" id="searchType">
+<option value="songs">Songs</option>
+<option value="artists">Artists</option>
+<option value="albums">Albums</option>
+<option value="groups">Groups</option>
+<option value="users">Users</option>
+</select></div>
+<div style="text-align: center;"><a href="temp">Submit a track</a></div>
+<div style="text-align: center;"><p id="results">Results will be displayed here.</p></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    var delayTimer;
+    function searchSongs() {
+            //http://localhost:8000/addTrack.php?q=asdf_00:02:00_rap_4231
+      //null safety later
+        const selection = document.querySelector('#searchType');
+        var search = document.getElementById("searchField").value;
+        document.getElementById("results").innerHTML = "Searching " + selection.value + " for " + search + "...";
+        clearTimeout(delayTimer);
+
+        delayTimer = setTimeout(function(){
+          console.log(selection.value);
+          if(selection.value == "songs"){
+            var url = "http://localhost:8000/searchTrack.php?q=" + search;
+            downloadUrl(url, function(data) {
+              var xml = data;
+              console.log(data.response);
+              if(data.response == ""){
+                document.getElementById("results").innerHTML += "<br>No Results Found.";
+              }else{
+                document.getElementById("results").innerHTML = selection.value + " " + search + " found!:<br>" + data.response;
+              }
+            });
+          }else{
+            console.log(selection.value);
+          }
+        }, 1000);
+    }
+
+
+
+function doSearch(text) {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(function() {
+        // Do the ajax stuff
+    }, 500); // Will do the ajax stuff after 1000 ms, or 1 s
+}
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+  <!--
+    <script>
+    function verify(elmnt,clr) {
+      elmnt.style.color = clr;
+    }
+    </script>
+  -->
+</html>
