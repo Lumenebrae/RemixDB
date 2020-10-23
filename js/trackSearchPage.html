@@ -18,22 +18,22 @@
     function searchSongs() {
             //http://localhost:8000/addTrack.php?q=asdf_00:02:00_rap_4231
       //null safety later
-
+        const selection = document.querySelector('#searchType');
+        var search = document.getElementById("searchField").value;
+        document.getElementById("results").innerHTML = "Searching " + selection.value + " for " + search + "...";
         clearTimeout(delayTimer);
+
         delayTimer = setTimeout(function(){
-          const selection = document.querySelector('#searchType');
           console.log(selection.value);
           if(selection.value == "songs"){
-            var search = document.getElementById("searchField").value;
-            document.getElementById("results").innerHTML = "Searching " + selection.value + " for " + search + "...";
             var url = "http://localhost:8000/searchTrack.php?q=" + search;
             downloadUrl(url, function(data) {
               var xml = data;
               console.log(data.response);
               if(data.response == ""){
-                document.getElementById("results").innerHTML = "No Results Found.";
+                document.getElementById("results").innerHTML += "<br>No Results Found.";
               }else{
-                document.getElementById("results").innerHTML = data.response;
+                document.getElementById("results").innerHTML = selection.value + " " + search + " found!:<br>" + data.response;
               }
             });
           }else{
