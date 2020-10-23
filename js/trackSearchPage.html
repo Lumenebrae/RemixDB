@@ -12,6 +12,7 @@
 </select></div>
 <div style="text-align: center;"><a href="temp">Submit a track</a></div>
 <div style="text-align: center;"><p id="results">Results will be displayed here.</p></div>
+<div id="output"></div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     var delayTimer;
@@ -26,15 +27,17 @@
         delayTimer = setTimeout(function(){
           console.log(selection.value);
           if(selection.value == "songs"){
+            console.log(search)
             var url = "http://localhost:8000/searchTrack.php?q=" + search;
             downloadUrl(url, function(data) {
-              var xml = data;
-              console.log(data.response);
-              if(data.response == ""){
-                document.getElementById("results").innerHTML += "<br>No Results Found.";
-              }else{
-                document.getElementById("results").innerHTML = selection.value + " " + search + " found!:<br>" + data.response;
+              var xml = data.responseXML;
+              var tracks = xml.documentElement.getElementsByTagName('track');
+              var tracksList = [];
+              for (x = 0; x < tracks.length; x++){
+                tracksList.push(tracks[x].getAttribute('Name'));
               }
+              document.getElementById('output').innerHTML = "";
+              document.getElementById('output').appendChild(makeUL(tracksList));
             });
           }else{
             console.log(selection.value);
@@ -42,6 +45,24 @@
         }, 1000);
     }
 
+    function makeUL(array) {
+    // Create the list element:
+    var list = document.createElement('ul');
+
+    for(var i = 0; i < array.length; i++) {
+        // Create the list item:
+        var item = document.createElement('li');
+
+        // Set its contents:
+        item.appendChild(document.createTextNode(array[i]));
+
+        // Add it to the list:
+        list.appendChild(item);
+    }
+
+    // Finally, return the constructed list:
+    return list;
+}
 
 
 function doSearch(text) {
