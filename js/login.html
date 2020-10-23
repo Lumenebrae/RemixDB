@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<div class="login-popup" id="login">
+    <form>
+        <h1 style="text-align: center">Login</h1>
+
+        <div style="text-align: center"><input type="text" placeholder="Username" id="username" required></div>
+
+        <div style="text-align: center"><input type="password" placeholder="Password" id="password" required></div>
+              
+        <div style="text-align: center"><button type="submit" class="btn" onclick='login()'>Login</button></div>
+        <div style="text-align: center;"><a href="createAccount.html">Create new account</a></div>
+
+    </form>
+</div>
+
+<script src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function login() {
+      //null safety later
+      var user = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+
+      var url = "http://localhost:8500/login.php?q=" + user + "_" + password;
+      downloadUrl(url, function(data) {
+
+      var xml = data.responseXML;
+      var tracks = xml.documentElement.getElementsByTagName('track');
+      //for (x = 0; x < tracks.length; x++){
+          //console.log(tracks[x]);
+        //tracksList.push(tracks[x].getAttribute('Name'));
+      //}
+      console.log(xml);
+      });
+    }
+
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+</script>
+</html>

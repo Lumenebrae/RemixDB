@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<div style="text-align: right;"><button type="button">Login</button></div>
+<div style="text-align: right;"><button type="button" onclick="location.href='login.html'">Login</button></div>
 <h1 style="text-align: center;">REMIX DB</h1>
 <br></br>
 <h1 style="text-align: center; font-size: 25px">Create New Account</h1>
@@ -8,10 +8,10 @@
 <div style="text-align: center;"><input id="Name" classname="long" type="text" placeholder="Name"/></div><br /></br />
 <div style="text-align: center;"><input id="email" classname="long" type="email" placeholder="Email" onkeyup='validateEmail()' required/><span id='message2'></span></div><br></br>
 <div style="text-align: center;"><input id="username" classname="long" type="text" placeholder="Username" required/></div><br></br>
-<div style="text-align: center;"><input id="password" classname="long" type="text" placeholder="Password" onkeyup='check()' required/></div><br></br>
-<div style="text-align: center;"><input id="confPassword" classname="long" type="text" placeholder="Confirm Password" onkeyup='check()' required/><span id='message'></span></div><br></br>
+<div style="text-align: center;"><input id="password" classname="long" type="password" placeholder="Password" onkeyup='check()' required/></div><br></br>
+<div style="text-align: center;"><input id="confPassword" classname="long" type="password" placeholder="Confirm Password" onkeyup='check()' required/><span id='message'></span></div><br></br>
+<div style="text-align: center"><button id = "submit" onclick="createAccount()">Create Account</button></div>
 </form>
-<button id = "submit" onclick="createAccount()">Create Account</button>
 
 <script src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
