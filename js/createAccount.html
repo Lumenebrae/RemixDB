@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<div style="text-align: right;"><button type="button">Login</button></div>
+<h1 style="text-align: center;">REMIX DB</h1>
+<br></br>
+<h1 style="text-align: center; font-size: 25px">Create New Account</h1>
+<form>
+<div style="text-align: center;"><input id="firstName" classname="long" type="text" placeholder="First Name"/></div><br /></br />
+<div style="text-align: center;"><input id="lastName" classname="long" type="text" placeholder="Last Name"/></div><br></br>
+<div style="text-align: center;"><input id="email" classname="long" type="text" placeholder="Email"/></div><br></br>
+<div style="text-align: center;"><input id="username" classname="long" type="text" placeholder="Username"/></div><br></br>
+<div style="text-align: center;"><input id="password" classname="long" type="text" placeholder="Password"/></div><br></br>
+<div style="text-align: center;"><input id="confPassword" classname="long" type="text" placeholder="Confirm Password"/></div><br></br>
+</form>
+<button onclick="createAccount()">Create Account</button>
+
+<script src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function createAccount() {
+      //null safety later
+      var firstName = document.getElementById("firstName").value;
+      var lastName = document.getElementById("lastName").value;
+      var email = document.getElementById("email").value;
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var confPassword = document.getElementById("confPassword").value;
+
+
+      var url = "http://localhost:8000/createAccount.php?="+ username + "_" + password + "_" + name + "_" + email;
+      downloadUrl(url, function(data) {
+
+      var xml = data.responseXML;
+      console.log(xml);
+      });
+    }
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+  </script>
+</html>
+
+
