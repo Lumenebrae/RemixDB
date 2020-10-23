@@ -4,7 +4,7 @@
     <form>
         <h1 style="text-align: center">Login</h1>
 
-        <div style="text-align: center"><input type="text" placeholder="Username" id="username" required></div>
+        <div style="text-align: center"><input type="text" placeholder="Email" id="email" required></div>
 
         <div style="text-align: center"><input type="password" placeholder="Password" id="password" required></div>
               
@@ -18,20 +18,23 @@
 <script>
 function login() {
       //null safety later
-      var user = document.getElementById("username").value;
+      var email = document.getElementById("email").value;
       var password = document.getElementById("password").value;
 
 
-      var url = "http://localhost:8500/login.php?q=" + user + "_" + password;
+      var url = "http://localhost:8500/login.php?q=" + email;
       downloadUrl(url, function(data) {
 
       var xml = data.responseXML;
-      var tracks = xml.documentElement.getElementsByTagName('track');
-      //for (x = 0; x < tracks.length; x++){
-          //console.log(tracks[x]);
-        //tracksList.push(tracks[x].getAttribute('Name'));
-      //}
-      console.log(xml);
+      var users = xml.documentElement.getElementsByTagName('user');
+      var user = users[0].getAttribute('Email');
+      var pass = users[0].getAttribute('Password');
+      if(pass.localeCompare(password) == 0 && user.localeCompare(email) == 0){
+          alert("Successfully logged in");
+      }
+      else{
+        alert("Failure");
+      }
       });
     }
 
