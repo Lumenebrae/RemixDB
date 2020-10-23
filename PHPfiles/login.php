@@ -15,6 +15,11 @@ $query = "SELECT UID, UserName, Password FROM user
     WHERE
         Email = '" . $email . "'";
 
+
+header('Access-Control-Allow-Origin: *');
+header("Content-type: text/xml");
+
+
 $result = mysqli_query($connection, $query);
 if ($connection->query($query) === TRUE) {
     echo "Login Failed, Connection Failed";

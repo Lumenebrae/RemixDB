@@ -32,6 +32,9 @@ $query = "INSERT INTO user (UID, UserName, Password, Realname, Email)
            '".$name."',
            '".$email."')";
 
+header('Access-Control-Allow-Origin: *');
+header("Content-type: text/xml");
+
 // Insert the user and recive a response
 if ($connection->query($query) === TRUE) {
     echo "Inserted user succesfully";
