@@ -11,6 +11,7 @@
 <option value="users">Users</option>
 </select></div>
 <div style="text-align: center;"><a href="temp">Submit a track</a></div>
+<div style="text-align: center;"><p id="results">Results will be displayed here.</p></div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     var delayTimer;
@@ -24,10 +25,16 @@
           console.log(selection.value);
           if(selection.value == "songs"){
             var search = document.getElementById("searchField").value;
+            document.getElementById("results").innerHTML = "Searching " + selection.value + " for " + search + "...";
             var url = "http://localhost:8000/searchTrack.php?q=" + search;
             downloadUrl(url, function(data) {
               var xml = data;
               console.log(data.response);
+              if(data.response == ""){
+                document.getElementById("results").innerHTML = "No Results Found.";
+              }else{
+                document.getElementById("results").innerHTML = data.response;
+              }
             });
           }else{
             console.log(selection.value);
