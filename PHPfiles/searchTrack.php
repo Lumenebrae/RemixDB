@@ -16,10 +16,25 @@ if (!$result) {
 
 
 header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
+header("Content-type: text/xml");
 
 // Start XML file, echo parent node
-while ($row = @mysqli_fetch_assoc($result)) {
-    echo nl2br(json_encode($row)."\r\n");
+echo "<?xml version='1.0' ?>";
+echo '<tracks>';
+$ind=0;
+// Iterate through the rows, printing XML nodes for each
+while ($row = @mysqli_fetch_assoc($result)){
+    // Add to XML document node
+    echo '<track ';
+    echo 'TID="' . $row['TID'] . '" ';
+    echo 'Name="' . $row['Name'] . '" ';
+    echo 'Length="' . $row['Length'] . '" ';
+    echo 'Genre="' . $row['Genre'] . '" ';
+    echo 'UID="' . $row['UID'] . '" ';
+    echo '/>';
+    $ind = $ind + 1;
 }
+
+// End XML file
+echo '</tracks>';
 $connection->close();
