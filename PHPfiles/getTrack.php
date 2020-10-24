@@ -13,16 +13,17 @@ if (!$result) {
     die('Invalid query: ' . mysqli_error($connection));
 }
 
-
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json');
-
-// Start XML file, echo parent node
 $row = @mysqli_fetch_assoc($result);
 
-echo json_encode($row);
+header('Access-Control-Allow-Origin: *');
+header("Content-type: text/xml");
+echo "<?xml version='1.0' ?>";
+echo '<info>';
+echo '<track ';
+echo 'title="' . $row['Name'] . '" ';
+echo 'length="' . $row['Length'] . '" ';
+echo 'genre="' . $row['Genre'] . '" ';
+echo '/>';
+echo '</info>';
 $connection->close();
-
-
-
 

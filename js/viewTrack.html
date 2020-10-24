@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <div>
-    Track ID (TEMP):&nbsp;
-    <input
-      id="field_tid"
-      className="long"
-      type="text"
-    />
-    
-    <button onclick="getTrack()">Add Album</button>
-  </div>
-  <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
+  <body>
+    <div>
+      Track ID (TEMP):&nbsp;
+      <input
+        id="field_tid"
+        className="long"
+        type="text"
+      />
+      
+      <button onclick="getTrack()">retrieve</button>
+    </div>
+  </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     function getTrack() {
       //null safety later
       var tid = document.getElementById("field_tid").value;
-      var url = "http://localhost:8000/addTrack.php?q=" + tid;
+      var url = "http://localhost:8000/getTrack2.php?q=" + tid;
       downloadUrl(url, function(data) {
-
       var xml = data.responseXML;
+      var track = xml.documentElement.getElementsByTagName('track');
+      console.log(data);
       console.log(xml);
+      title = track[0].getAttribute('title');
+      length = track[0].getAttribute('length');
+      genre = track[0].getAttribute('genre');
+      console.log(title);
+      var display = document.createElement('div');
+      display.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
+      document.body.appendChild(display);
+      console.log(display);
       });
+    }
 
     function downloadUrl(url, callback) {
         var request = window.ActiveXObject ?
             new ActiveXObject('Microsoft.XMLHTTP') :
             new XMLHttpRequest;
-
+          
             request.onreadystatechange = function() {
               if (request.readyState == 4) {
                 request.onreadystatechange = doNothing;
@@ -44,11 +55,4 @@
 
 
   </script>
-  <!--
-    <script>
-    function verify(elmnt,clr) {
-      elmnt.style.color = clr;
-    }
-    </script>
-  -->
 </html>
