@@ -17,7 +17,7 @@
     function getTrack() {
       //null safety later
       var tid = document.getElementById("field_tid").value;
-      var url = "http://localhost:8000/getTrack2.php?q=" + tid;
+      var url = "http://localhost:8000/getTrack.php?q=" + tid;
       downloadUrl(url, function(data) {
       var xml = data.responseXML;
       var track = xml.documentElement.getElementsByTagName('track');
