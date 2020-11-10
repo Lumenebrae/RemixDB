@@ -17,20 +17,67 @@
     function getTrack() {
       //null safety later
       var tid = document.getElementById("field_tid").value;
-      var url = "http://localhost:8000/getTrack.php?q=" + tid;
+      var url = "http://localhost:8000/getTrack2.php?q=" + tid;
+      var display = document.createElement('div');
+      var displaytrack = document.createElement('div');
+      var displayartists = document.createElement('div');
+      var displaygroups = document.createElement('div');
+      var displayremixes = document.createElement('div');
+      var displayremixof = document.createElement('div');
+
       downloadUrl(url, function(data) {
+      console.log(data);
       var xml = data.responseXML;
       var track = xml.documentElement.getElementsByTagName('track');
-      console.log(data);
       console.log(xml);
       title = track[0].getAttribute('title');
       length = track[0].getAttribute('length');
       genre = track[0].getAttribute('genre');
-      console.log(title);
-      var display = document.createElement('div');
-      display.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
+      user = track[0].getAttribute('UID');
+      displaytrack.appendChild(document.createTextNode('track: ' + title + ', ' + length + ', ' + genre));
+      display.appendChild(displaytrack)
+
+      //artist and group info
+      var artists = xml.documentElement.getElementsByTagName('artist');
+      if (artists != null){
+        for (x of artists) {
+          aid = x.getAttribute('AID');
+          names = x.getAttribute('name');
+          displayartists.appendChild(document.createTextNode(' artist:' + aid + ', ' + names));
+        }
+        display.appendChild(displayartists)
+      }      
+      var groups = xml.documentElement.getElementsByTagName('group');
+      if (groups != null){
+        for (x of groups) {
+          aid = x.getAttribute('GID');
+          names = x.getAttribute('name');
+          displaygroups.appendChild(document.createTextNode('group:' + aid + ', ' + names));
+        }
+        display.appendChild(displaygroups)
+      }
+
+      //remix info
+      var remixes = xml.documentElement.getElementsByTagName('remix');
+      if (remixes != null){
+        for (x of remixes) {
+          tid = x.getAttribute('TID');
+          title = x.getAttribute('title');
+          displayremixes.appendChild(document.createTextNode('remix:' + tid + ', ' + title));
+        }
+        display.appendChild(displayremixes)
+      }
+      var sources = xml.documentElement.getElementsByTagName('source');
+      if (sources != null){
+        for (x of sources) {
+          tid = x.getAttribute('TID');
+          title = x.getAttribute('title');
+          displayremixof.appendChild(document.createTextNode('source:' + tid + ', ' + title));
+        }
+        display.appendChild(displayremixof)
+      }
+      
       document.body.appendChild(display);
-      console.log(display);
       });
     }
 
