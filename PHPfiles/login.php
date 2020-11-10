@@ -20,7 +20,6 @@ header('Access-Control-Allow-Origin: *');
 header("Content-type: text/xml");
 echo "<?xml version='1.0' ?>";
 echo '<users>';
-
 $result = mysqli_query($connection, $query);
 if ($connection->query($query) === TRUE) {
     echo "Login Failed, Connection Failed";
@@ -32,8 +31,10 @@ if ($connection->query($query) === TRUE) {
         echo 'UserName="' . $row['UserName'] . '" ';
         echo 'Password="' . $row['Password'] . '" ';
         echo '/>';
-    }
-}
 
+    }
+
+}
 echo '</users>';
+
 $connection->close();
