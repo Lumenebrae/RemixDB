@@ -21,7 +21,7 @@ if (!$result) {
 }
 
 $row = @mysqli_fetch_assoc($result);
-$userID = $row['MAX(userID)'] + 1;
+$userID = $row['MAX(UID)'] + 1;
 
 // Query for inserting a new user
 $query = "INSERT INTO user (UID, UserName, Password, Realname, Email)

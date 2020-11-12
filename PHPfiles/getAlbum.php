@@ -6,7 +6,7 @@ if (!$connection) {
     die('Not connected : ' . mysqli_connect_error());
 }
 
-$query = "select * from track where TID=".$q;
+$query = "select * from albums where ALID=".$q;
 
 $result = mysqli_query($connection, $query);
 if (!$result) {
@@ -19,10 +19,11 @@ header('Access-Control-Allow-Origin: *');
 header("Content-type: text/xml");
 echo "<?xml version='1.0' ?>";
 echo '<info>';
-echo '<track ';
-echo 'title="' . $row['Name'] . '" ';
-echo 'length="' . $row['Length'] . '" ';
-echo 'genre="' . $row['Genre'] . '" ';
+echo '<artist ';
+echo 'ALID="' . $row['ALID'] . '" ';
+echo 'AID="' . $row['AID'] . '" ';
+echo 'GID="' . $row['GID'] . '" ';
+echo 'Name="' . $row['Name'] . '" ';
 echo '/>';
 echo '</info>';
 $connection->close();
