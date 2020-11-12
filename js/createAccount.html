@@ -51,7 +51,7 @@
       var confPassword = document.getElementById("confPassword").value;
 
 
-      var url = "http://localhost:8000/createAccount.php?q="+ username + "_" + password + "_" + Name + "_" + email;
+      var url = "http://localhost:8500/createAccount.php?q="+ username + "_" + password + "_" + Name + "_" + email;
       downloadUrl(url, function(data) {
 
       var xml = data.responseXML;
