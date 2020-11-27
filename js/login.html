@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<div class="login-popup" id="login">
+    <form>
+        <h1 style="text-align: center">Login</h1>
+
+        <div style="text-align: center"><input type="text" placeholder="Email" id="email" required></div>
+
+        <div style="text-align: center"><input type="password" placeholder="Password" id="password" required></div>
+              
+        <div style="text-align: center"><button type="submit" class="btn" onclick='login()'>Login</button></div>
+        <div style="text-align: center;"><a href="createAccount.html">Create new account</a></div>
+
+    </form>
+</div>
+
+<script src=src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function login() {
+      //null safety later
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+
+
+      var url = "http://localhost:8500/login.php?q=" + email;
+      downloadUrl(url, function(data) {
+
+      var xml = data.responseXML;
+      var users = xml.documentElement.getElementsByTagName('user');
+      var user = users[0].getAttribute('Email');
+      var pass = users[0].getAttribute('Password');
+      if(pass.localeCompare(password) == 0 && user.localeCompare(email) == 0){
+          alert("Successfully logged in");
+      }
+      else{
+        alert("Failure");
+      }
+      });
+    }
+
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+</script>
+</html>
