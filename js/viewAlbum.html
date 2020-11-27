@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <body>
+    <div>
+      Track ID (TEMP):&nbsp;
+      <input
+        id="field_tid"
+        className="long"
+        type="text"
+      />
+
+      <button onclick="getAlbum()">album</button>
+      <button onclick="getTracks()">tracks</button>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function getAlbum() {
+      //null safety later
+      var alid = 3;//document.getElementById("field_tid").value;
+      var url = "http://localhost:8000/getAlbum.php?q=" + alid;
+      downloadUrl(url, function(data) {
+      var xml = data.responseXML;
+      var album = xml.documentElement.getElementsByTagName('album');
+
+      title = album[0].getAttribute('albumName');
+      artist = album[0].getAttribute('artistName');
+      group = album[0].getAttribute('title');
+      console.log(title);
+      var display = document.createElement('div');
+      display.appendChild(document.createTextNode(title + ', ' + artist + ', ' + group));
+      document.body.appendChild(display);
+      console.log(display);
+      });
+    }
+    function getTracks(){
+      var alid = 1;//document.getElementById("field_tid").value;
+      var url = "http://localhost:8000/getTrackByALID.php?q=" + alid;
+      downloadUrl(url, function(data) {
+      var xml = data.responseXML;
+      var track = xml.documentElement.getElementsByTagName('track');
+      console.log(data);
+      console.log(xml);
+      for(var x = 0; x < track.length; x++){
+        title = track[x].getAttribute('Name');
+        length = track[x].getAttribute('Length');
+        genre = track[x].getAttribute('Genre');
+        console.log(title);
+        var display = document.createElement('div');
+        display.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
+        document.body.appendChild(display);
+      }
+
+      console.log(display);
+      });
+    }
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+</html>
