@@ -12,28 +12,34 @@ if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
 
-$query = "SELECT MAX(GID) FROM groups";
-$result = mysqli_query($con, $query);
-if (!$result) {
-    return "could not get maxID";
-}
+mysqli_begin_transaction($con);
 
-$row = @mysqli_fetch_assoc($result);
-$GID = $row['MAX(GID)'] + 1;
+try {
+    mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
 
+    $query = "SELECT MAX(GID) FROM bandgroups";
+    $result = mysqli_query($con, $query);
+    if (!$result) {
+        return "could not get maxID";
+    }
 
+    $row = @mysqli_fetch_assoc($result);
+    $GID = $row['MAX(GID)'] + 1;
 
-$query = "INSERT INTO groups (GID, Name, YearFormed, Type)
+    $query = "INSERT INTO bandgroups (GID, Name, YearFormed, Type)
           VALUES 
           ('".$GID."',
            '".$name."',
            '".$yearFormed."',
            '".$type."')";
 
-$result = mysqli_query($con, $query);
-if (!$result) {
-    die('Invalid query: ' . mysqli_error($con));
+    $result = mysqli_query($con, $query);
+    mysqli_commit($con);
+} catch (mysqli_sql_exception $exception){
+    mysqli_rollback($con);
+    throw $exception;
 }
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: text/xml');
 echo $result;

@@ -8,23 +8,27 @@ $length = $inputArray[1];
 $genre = $inputArray[2];
 $UID = $inputArray[3];
 
-$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
+$con = mysqli_connect('127.0.0.1',  "newuser", '', 'cs348');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
 
-$query = "SELECT MAX(TID) FROM track";
-$result = mysqli_query($con, $query);
-if (!$result) {
-    return "could not get maxID";
-}
 
-$row = @mysqli_fetch_assoc($result);
-$TID = $row['MAX(TID)'] + 1;
+
+mysqli_begin_transaction($con);
+try {
+    mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
+    $query = "SELECT MAX(TID) FROM track";
+    $result = mysqli_query($con, $query);
+    if (!$result) {
+        return "could not get maxID";
+    }
+
+    $row = @mysqli_fetch_assoc($result);
+    $TID = $row['MAX(TID)'] + 1;
 
 
 //$trackArt = $data['imageString'];
-if (1/*strpos($trackArt, '<<>>') !== false*/) {
     $query = "INSERT INTO track (TID, Name, Length, Genre, UID)
           VALUES 
           ('".$TID."',
@@ -32,20 +36,17 @@ if (1/*strpos($trackArt, '<<>>') !== false*/) {
            '".$length."',
            '".$genre."',
            '".$UID."')";
-} else {
-    $query = "INSERT INTO track (TID, Name, Length, Genre, UID)
-          VALUES 
-          ('".$TID."',
-           '".$name."',
-           '".$length."',
-           '".$genre."',
-           '".$UID."')";
+
+    $result = mysqli_query($con, $query);
+        mysqli_commit($con);
+} catch (mysqli_sql_exception $exception){
+    mysqli_rollback($con);
+    throw $exception;
 }
-$result = mysqli_query($con, $query);
-if (!$result) {
-    die('Invalid query: ' . mysqli_error($con));
-}
+
 header('Access-Control-Allow-Origin: *');
-header('Content-Type: text/xml');
+//header('Content-Type: text/xml');
+
 echo $result;
+
 $con->close();
