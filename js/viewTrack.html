@@ -6,6 +6,7 @@
 
 
   <body>
+
     <div>
 
       Track ID (TEMP):&nbsp;
@@ -19,63 +20,56 @@
     </div>
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
-    <div class = 'div_page_header'>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50"> View Track
-    </div>
-
-    <div id = 'track' class = 'div_header'>
-      Track:
-      <div id = 'track_internal'  class = 'div_internal'>
-        <div id = 'track_title'>Title: </div>
-        <div id = 'track_length'>Length: </div>
-        <div id = 'trac_genre'>Genre: </div>
+    <div class = 'div_background_of_page'>
+      <div id = 'track_page_header' class = 'div_page_header'>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
       </div>
-    </div>
-    <br>
+      <br>
 
-    <div id = 'artist' class = 'div_header'>
-      Artist:
-      <div id = 'artist_internal'  class = 'div_internal'>
-        <div id = 'artist_name'>Name: </div>
+      <div id = 'track' class = 'div_header'>
+        Track:
+        <div id = 'track_internal'  class = 'div_internal'>
+          <div id = 'track_title'>Title: </div>
+          <div id = 'track_length'>Length: </div>
+          <div id = 'trac_genre'>Genre: </div>
+        </div>
       </div>
-    </div>
-    <br>
 
-    <div id = 'group' class = 'div_header'>
-      Group:
-      <div id = 'group_internal'  class = 'div_internal'>
-        <div id = 'group_title'>Title: </div>
-        <div id = 'group_year'>Year Formed: </div>
-        <div id = 'group_type'>Type: </div>
+
+      <div id = 'artists' class = 'div_header'>
+        Artists:
+        <div id = 'artist_internal'  class = 'div_internal_ol'>
+          <ol id = 'artist_list'></ol>
+        </div>
       </div>
-    </div>
-    <br>
 
-    <div id = 'album' class = 'div_header'>
-      Album:
-      <div id = 'track_internal'  class = 'div_internal'>
-        <div id = 'album_name'>Name: </div>
+
+      <div id = 'groups' class = 'div_header'>
+        Groups:
+        <div id = 'group_internal'  class = 'div_internal_ol'>
+          <ol id = 'group_list'> </ol>
+        </div>
       </div>
-    </div>
-    <br>
 
-    <div id = 'remixes' class = 'div_header'>
-      Remixes:
-      <div id = 'remixes_internal'  class = 'div_internal_ol'>
-        <ol>
-          <li>Coffee</li>
-          <li>Tea</li>
-          <li>Milk</li>
-        </ol>
+      <div id = 'albums' class = 'div_header'>
+        Album:
+        <div id = 'track_internal'  class = 'div_internal_ol'>
+          <ol id = 'album_list'> </ol>
+        </div>
       </div>
-    </div>
-    <br>
 
-    <div id = 'source'  class = 'div_header'>
-      Source Track:
-      <div id = 'source_internal'  class = 'div_internal'>
-        <div id = 'source_name'>Source Name: </div>
+      <div id = 'remixes' class = 'div_header'>
+        Remixes:
+        <div id = 'remixes_internal'  class = 'div_internal_ol'>
+          <ol id = 'remixes_list'> </ol>
+        </div>
+      </div>
+
+      <div id = 'sources'  class = 'div_header'>
+        Source Track:
+        <div id = 'source_internal'  class = 'div_internal_ol'>
+          <ol id = 'sources_list'> </ol>
+        </div>
       </div>
     </div>
 
@@ -86,66 +80,82 @@
       //null safety later
       var tid = document.getElementById("field_tid").value;
       var url = "http://localhost:8000/getTrack2.php?q=" + tid;
-      var display = document.createElement('div');
-      var displaytrack = document.getElementById('track');
-      var displayartists = document.getElementById('artist');
-      var displaygroups = document.getElementById('group');
-      var displayremixes = document.getElementById('remixes');
-      var displayremixof = document.getElementById('source');
 
       downloadUrl(url, function(data) {
-      console.log(data);
-      var xml = data.responseXML;
-      var track = xml.documentElement.getElementsByTagName('track');
-      console.log(xml);
-      title = track[0].getAttribute('title');
-      length = track[0].getAttribute('length');
-      genre = track[0].getAttribute('genre');
-      user = track[0].getAttribute('UID');
-      displaytrack.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
-      display.appendChild(displaytrack)
+        console.log(data);
+        var xml = data.responseXML;
+        var track = xml.documentElement.getElementsByTagName('track');
+        console.log(xml);
+        var title = track[0].getAttribute('title');
+        var length = track[0].getAttribute('length');
+        var genre = track[0].getAttribute('genre');
+        var user = track[0].getAttribute('UID');
+        document.getElementById('track_page_header').innerHTML += title;
+        document.getElementById('track').style.display = "inherit";
+        document.getElementById('track_title').innerHTML += title;
+        document.getElementById('track_length').innerHTML += length;
+        document.getElementById('trac_genre').innerHTML += genre;
 
-      //artist and group info
-      var artists = xml.documentElement.getElementsByTagName('artist');
-      if (artists != null){
-        for (x of artists) {
-          aid = x.getAttribute('AID');
-          names = x.getAttribute('name');
-          displayartists.appendChild(document.createTextNode(' artist:' + aid + ', ' + names));
-        }
-        display.appendChild(displayartists)
-      }
-      var groups = xml.documentElement.getElementsByTagName('group');
-      if (groups != null){
-        for (x of groups) {
-          aid = x.getAttribute('GID');
-          names = x.getAttribute('name');
-          displaygroups.appendChild(document.createTextNode('group:' + aid + ', ' + names));
-        }
-        display.appendChild(displaygroups)
-      }
 
-      //remix info
-      var remixes = xml.documentElement.getElementsByTagName('remix');
-      if (remixes != null){
-        for (x of remixes) {
-          tid = x.getAttribute('TID');
-          title = x.getAttribute('title');
-          displayremixes.appendChild(document.createTextNode('remix:' + tid + ', ' + title));
-        }
-        display.appendChild(displayremixes)
-      }
-      var sources = xml.documentElement.getElementsByTagName('source');
-      if (sources != null){
-        for (x of sources) {
-          tid = x.getAttribute('TID');
-          title = x.getAttribute('title');
-          displayremixof.appendChild(document.createTextNode('source:' + tid + ', ' + title));
-        }
-        display.appendChild(displayremixof)
-      }
 
-      document.body.appendChild(display);
+        //artist and group info
+        var artists = xml.documentElement.getElementsByTagName('artist');
+        if (artists != null){
+          for (x of artists) {
+            document.getElementById('artists').style.display = "inherit";
+            var aid = x.getAttribute('AID');
+            var names = x.getAttribute('artistName');
+            console.log(names);
+            document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+        var groups = xml.documentElement.getElementsByTagName('group');
+        if (groups != null){
+          for (x of groups) {
+            document.getElementById('groups').style.display = "inherit";
+            var aid = x.getAttribute('GID');
+            var names = x.getAttribute('name');
+            var year = x.getAttribute('year');
+            var type = x.getAttribute('type');
+            /*<div id = 'group_title'>Title: </div>
+            <div id = 'group_year'>Year Formed: </div>
+            <div id = 'group_type'>Type: </div>*/
+            document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+        var albums = xml.documentElement.getElementsByTagName('album');
+        if (albums != null){
+          for (x of albums) {
+            document.getElementById('albums').style.display = "inherit";
+            var aid = x.getAttribute('ALID');
+            var names = x.getAttribute('name');
+            /*<div id = 'group_title'>Title: </div>
+            <div id = 'group_year'>Year Formed: </div>
+            <div id = 'group_type'>Type: </div>*/
+            document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+        //remix info
+        var remixes = xml.documentElement.getElementsByTagName('remix');
+        if (remixes != null){
+          for (x of remixes) {
+            document.getElementById('remixes').style.display = "inherit";
+            tid = x.getAttribute('TID');
+            title = x.getAttribute('title');
+            document.getElementById('remixes_list').innerHTML += "<li>"+ title +"</li>";
+          }
+        }
+        var sources = xml.documentElement.getElementsByTagName('source');
+        if (sources != null){
+          for (x of sources) {
+            document.getElementById('sources').style.display = "inherit";
+            tid = x.getAttribute('TID');
+            title = x.getAttribute('title');
+            document.getElementById('sources_list').innerHTML += "<li>"+ title +"</li>";
+          }
+        }
       });
     }
 
