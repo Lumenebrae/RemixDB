@@ -1,31 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-  <style>
-  .div_header {
-    max-width: 500px;
-    margin: auto;
-    border: 5px outset #CEB888;
-    background-color: #9D968D;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 25px;
-    font-weight: bold;
-    letter-spacing: -1px;
-    line-height: 1;
-    text-align: left;
-  }
-  .div_internal {
-    border: 5px outset #CEB888;
-    background-color: #9D968D;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: -1px;
-    line-height: 1;
-    text-align: left;
-    text-indent: 50px;
-  }
-  </style>
+    <link rel="stylesheet" href="purdue_css.css">
   </head>
 
   <body>
@@ -76,12 +52,23 @@
     </div>
     <br>
 
-    <div id = 'remixes'>
-
+    <div id = 'remixes' class = 'div_header'>
+      Remixes:
+      <div id = 'remixes_internal'  class = 'div_internal_ol'>
+        <ol>
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+        </ol>
+      </div>
     </div>
+    <br>
 
-    <div id = 'source'>
-
+    <div id = 'source'  class = 'div_header'>
+      Source Track:
+      <div id = 'source_internal'  class = 'div_internal'>
+        <div id = 'source_name'>Source Name: </div>
+      </div>
     </div>
 
   </body>
