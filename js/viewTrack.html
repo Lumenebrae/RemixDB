@@ -1,5 +1,33 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head>
+  <style>
+  .div_header {
+    max-width: 500px;
+    margin: auto;
+    border: 5px outset #CEB888;
+    background-color: #9D968D;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+    text-align: left;
+  }
+  .div_internal {
+    border: 5px outset #CEB888;
+    background-color: #9D968D;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+    text-align: left;
+    text-indent: 50px;
+  }
+  </style>
+  </head>
+
   <body>
     <div>
       Track ID (TEMP):&nbsp;
@@ -8,9 +36,54 @@
         className="long"
         type="text"
       />
-      
-      <button onclick="getTrack2()">retrieve</button>
+
+      <button onclick="getTrack()">retrieve</button>
     </div>
+
+    <div id = 'track' class = 'div_header'>
+      Track:
+      <div id = 'track_internal'  class = 'div_internal'>
+        <div id = 'track_title'>Title: </div>
+        <div id = 'track_length'>Length: </div>
+        <div id = 'trac_genre'>Genre: </div>
+      </div>
+    </div>
+    <br>
+
+    <div id = 'artist' class = 'div_header'>
+      Artist:
+      <div id = 'artist_internal'  class = 'div_internal'>
+        <div id = 'artist_name'>Name: </div>
+      </div>
+    </div>
+    <br>
+
+    <div id = 'group' class = 'div_header'>
+      Group:
+      <div id = 'group_internal'  class = 'div_internal'>
+        <div id = 'group_title'>Title: </div>
+        <div id = 'group_year'>Year Formed: </div>
+        <div id = 'group_type'>Type: </div>
+      </div>
+    </div>
+    <br>
+
+    <div id = 'album' class = 'div_header'>
+      Album:
+      <div id = 'track_internal'  class = 'div_internal'>
+        <div id = 'album_name'>Name: </div>
+      </div>
+    </div>
+    <br>
+
+    <div id = 'remixes'>
+
+    </div>
+
+    <div id = 'source'>
+
+    </div>
+
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
@@ -19,11 +92,11 @@
       var tid = document.getElementById("field_tid").value;
       var url = "http://localhost:8000/getTrack2.php?q=" + tid;
       var display = document.createElement('div');
-      var displaytrack = document.createElement('div');
-      var displayartists = document.createElement('div');
-      var displaygroups = document.createElement('div');
-      var displayremixes = document.createElement('div');
-      var displayremixof = document.createElement('div');
+      var displaytrack = document.getElementById('track');
+      var displayartists = document.getElementById('artist');
+      var displaygroups = document.getElementById('group');
+      var displayremixes = document.getElementById('remixes');
+      var displayremixof = document.getElementById('source');
 
       downloadUrl(url, function(data) {
       console.log(data);
@@ -34,7 +107,7 @@
       length = track[0].getAttribute('length');
       genre = track[0].getAttribute('genre');
       user = track[0].getAttribute('UID');
-      displaytrack.appendChild(document.createTextNode('track: ' + title + ', ' + length + ', ' + genre));
+      displaytrack.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
       display.appendChild(displaytrack)
 
       //artist and group info
@@ -46,7 +119,7 @@
           displayartists.appendChild(document.createTextNode(' artist:' + aid + ', ' + names));
         }
         display.appendChild(displayartists)
-      }      
+      }
       var groups = xml.documentElement.getElementsByTagName('group');
       if (groups != null){
         for (x of groups) {
@@ -76,7 +149,7 @@
         }
         display.appendChild(displayremixof)
       }
-      
+
       document.body.appendChild(display);
       });
     }
@@ -85,7 +158,7 @@
         var request = window.ActiveXObject ?
             new ActiveXObject('Microsoft.XMLHTTP') :
             new XMLHttpRequest;
-          
+
             request.onreadystatechange = function() {
               if (request.readyState == 4) {
                 request.onreadystatechange = doNothing;
