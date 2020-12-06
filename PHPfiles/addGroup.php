@@ -6,6 +6,7 @@ $inputArray = explode("_", $q);
 $name = $inputArray[0];
 $yearFormed = $inputArray[1];
 $type = $inputArray[2];
+$members = $inputArray[3];
 
 $con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
 if (!$con) {
@@ -13,34 +14,29 @@ if (!$con) {
 }
 
 mysqli_begin_transaction($con);
-
 try {
     mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
+    //auto incrementing ids enabled on tables, so no longer need to calculate it.
 
-    $query = "SELECT MAX(GID) FROM bandgroups";
+    $query = "SET @id = ''"; //create output variable
+    mysqli_query($con, $query);
+    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
+    mysqli_query($con, $query);
+    $query = "SELECT @id AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);
-    if (!$result) {
-        return "could not get maxID";
-    }
-
     $row = @mysqli_fetch_assoc($result);
-    $GID = $row['MAX(GID)'] + 1;
-
-    $query = "INSERT INTO bandgroups (GID, Name, YearFormed, Type)
-          VALUES 
-          ('".$GID."',
-           '".$name."',
-           '".$yearFormed."',
-           '".$type."')";
-
-    $result = mysqli_query($con, $query);
     mysqli_commit($con);
+
+    //send the trackID back
+    header('Access-Control-Allow-Origin: *');
+    header("Content-type: text/xml");
+    echo '<id>';
+    echo 'id="' . $row['id'] . '" ';
+    echo '</id>';
+
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);
     throw $exception;
 }
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: text/xml');
-echo $result;
 $con->close();
