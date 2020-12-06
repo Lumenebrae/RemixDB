@@ -14,17 +14,17 @@ if (!$resultT) { #does this differentiate between null and empty? the answer: it
 }
 
 //retrieve associated tracks
-$query = "select * from tracks where TID in (select TID from trackcreditartist where AID=".$q.")";
+$query = "select * from track where TID in (select TID from trackcreditartist where AID=".$q.")";
 $result1 = mysqli_query($connection, $query);
 
 
 //retrieve associated groups
-$query = "select distinct title from bandgroups join trackcreditgroup on bandgroups.GID = trackcreditgroup.GID join artists on trackcreditgroup.AID = artists.AID where artists.AID ='".$q."'";
+$query = "select distinct g.name from groups as g join member on g.GID = member.GID where member.AID ='".$q."'";
 $result2 = mysqli_query($connection, $query);
 
 
 //retrieve associated albums
-$query = "select distinct albumName from albumtracks join albumtracks on trackcreditartist.TID = albumtracks.TID join artists on artists.AID = trackcreditartist.AID where artists.AID = '".$q."'";
+$query = "select distinct a.Name from albums as a join artists on a.AID = artists.AID where artists.AID = '".$q."'";
 $result3 = mysqli_query($connection, $query);
 
 

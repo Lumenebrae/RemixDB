@@ -7,24 +7,24 @@ if (!$connection) {
 }
 
 //retrieve artist data
-$query = "select * from bandgroups where GID= ".$q;
+$query = "select * from groups where GID= ".$q;
 $resultT = mysqli_query($connection, $query);
 if (!$resultT) { #does this differentiate between null and empty? the answer: it does not.
     die('Invalid query: ' . mysqli_error($connection));
 }
 
 //retrieve associated artists
-$query = "select distinct artistName from artists join trackcreditgroup on artists.AID = trackcreditgroup.AID join bandgroups on trackcreditgroup.GID = bandgroups.GID where bandgroups.GID ='".$q."'";
+$query = "select distinct a.name from artists as a join member on a.AID = member.AID where member.GID ='".$q."'";
 $result1 = mysqli_query($connection, $query);
 
 
 //retrieve associated tracks
-$query = "select * from tracks where TID in (select TID from trackcreditartist where GID=".$q.")";
+$query = "select * from track where TID in (select TID from trackcreditgroup where GID=".$q.")";
 $result2 = mysqli_query($connection, $query);
 
 
 //retrieve associated albums
-$query = "select distinct albumName from albumtracks join albumtracks on trackcreditartist.TID = albumtracks.TID join bandgroups on bandgroups.GID = trackcreditartist.GID where bandgroups.GID = '".$q."'";
+$query = "select distinct a.Name from albums as a where a.GID = '".$q."'";
 $result3 = mysqli_query($connection, $query);
 
 
@@ -42,7 +42,7 @@ echo '/>';
 
 //iterate through artists
 if ($result1) {
-    while ($row = @mysqli_fetch_assoc($result2)){
+    while ($row = @mysqli_fetch_assoc($result1)){
         // Add to XML document node
         echo '<artist ';
         echo 'artistName="' . $row['artistName'] . '" ';
@@ -51,8 +51,8 @@ if ($result1) {
 }
 
 //iterate through tracks
-if ($result1) {
-    while ($row = @mysqli_fetch_assoc($result1)){
+if ($result2) {
+    while ($row = @mysqli_fetch_assoc($result2)){
         // Add to XML document node
         echo '<track ';
         echo 'title="' . $row['Name'] . '" ';
