@@ -12,6 +12,7 @@ $GID = $inputArray[5];
 $ALID = $inputArray[6];
 $ORID = $inputArray[7];
 $TRID = $inputArray[8];
+$id= -1;
 
 $con = mysqli_connect('127.0.0.1',  "Lumenebrae", 'bombkirby9bombkirby9', 'remixdbz');
 if (!$con) {
@@ -21,35 +22,26 @@ if (!$con) {
 mysqli_begin_transaction($con);
 try {
     mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
-    //$query = "SELECT MAX(TID) FROM track";
-    //$result = mysqli_query($con, $query);
-    //if (!$result) {
-    //    return "could not get maxID";
-    //}
+    //auto incrementing ids enabled on tables, so no longer need to calculate it.
 
-    //$row = @mysqli_fetch_assoc($result);
-    //$TID = $row['MAX(TID)'] + 1;
-
-
-//$trackArt = $data['imageString'];
-    //$query = "INSERT INTO track (TID, Name, Length, Genre, UID)
-    //      VALUES
-    //      ('".$TID."',
-    //       '".$name."',
-    //       '".$length."',
-    //       '".$genre."',
-    //       '".$UID."')";
-    $query = "CALL MasterAddTrack('".$name."','".$length."','".$genre."',".$UID.",'".$AID."','".$GID."','".$ALID."','".$ORID."','".$TRID."')";
+    $query = "SET @id = ''"; //create output variable
     $result = mysqli_query($con, $query);
-        mysqli_commit($con);
+    $query = "CALL MasterAddTrack('".$name."','".$length."','".$genre."',".$UID.",'".$AID."','".$GID."','".$ALID."','".$ORID."','".$TRID."', @id)";
+    $result = mysqli_query($con, $query);
+    $query = "SELECT @id AS id"; // fetch the output variable
+    $result = mysqli_query($con, $query);
+    $row = @mysqli_fetch_assoc($result);
+    mysqli_commit($con);
+
+    //send the trackID back
+    header('Access-Control-Allow-Origin: *');
+    header("Content-type: text/xml");
+    echo '<id>';
+    echo 'id="' . $row['id'] . '" ';
+    echo '</id>';
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);
     throw $exception;
 }
-
-header('Access-Control-Allow-Origin: *');
-//header('Content-Type: text/xml');
-
-echo $result;
 
 $con->close();

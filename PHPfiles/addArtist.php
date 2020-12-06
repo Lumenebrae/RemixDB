@@ -5,7 +5,8 @@ $q = $_REQUEST["q"];
 $inputArray = explode("_", $q);
 
 
-$con = mysqli_connect('127.0.0.1',  "newuser", '', 'cs348');
+#$con = mysqli_connect('127.0.0.1',  "newuser", '', 'cs348');
+$con = mysqli_connect('127.0.0.1',  "Lumenebrae", 'bombkirby9bombkirby9', 'remixdbz');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -19,10 +20,8 @@ try {
     $result = mysqli_query($con, $query);
     $row = @mysqli_fetch_assoc($result);
     $AID = $row['MAX(AID)'] + 1;
-    $query = "INSERT INTO artists (AID, Name)
-          VALUES 
-          ('".$AID."',
-           '".$q."')";
+    $query = "INSERT INTO artists (Name)
+          VALUES ('".$q."')";
 
     $result = mysqli_query($con, $query);
     mysqli_commit($con);

@@ -2,14 +2,14 @@
 <html lang="en-US">
 <div class = 'div_background_of_page'>
   <link rel="stylesheet" href="purdue_css.css">
-  <div class = 'div_page_header'>
+  <div class = 'div_internal'>
     User ID (TEMP):&nbsp;
     <input
       id="field_uid"
       className="long"
       type="text"
     />
-    <p class="SongUploadHeader">Add a Song</p>
+    <p class="div_page_header">Add a Song</p>
     <form id="songform" className="inputs">
       Song Title:&nbsp;
       <input
@@ -66,7 +66,7 @@
         type="text"
       />
     </form>
-    <button onclick="addSong()">Add Song</button>
+    <button onclick="addTrack()">Add Track</button>
 
     <p class="ArtistUploadHeader">New Artist</p>
     <form id="artistform" className="inputs">
@@ -82,23 +82,30 @@
 
     <p class="GroupUploadHeader">New Group</p>
     <form id="groupform" className="inputs">
-      Artist Name:&nbsp;
+      Name:&nbsp;
       <input
         id="field_groupname"
         className="long"
         type="text"
       />
       <br /> <br />
-      Length:&nbsp;
+      Year:&nbsp;
       <input
         id="field_groupyear"
         className="long"
         type="text"
       />
       <br /> <br />
-      Length:&nbsp;
+      Type:&nbsp;
       <input
         id="field_grouptype"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      Members (1,2...):&nbsp;
+      <input
+        id="field_groupmembers"
         className="long"
         type="text"
       />
@@ -141,7 +148,7 @@
     var TRID = []
     var SID = []
 
-    function addSong() {
+    function addTrack() { //Page -> PHP -> MySQL -> PHP -> Page -]
       //null safety later
       var user = document.getElementById("field_uid").value;
       var trackname = document.getElementById("field_trackname").value;
@@ -165,29 +172,39 @@
       //}
     }
 
-    function addArtist() {
+    function addArtist() { //Page -> PHP -> MySQL -] PHP -] Page
       if (document.getElementById("field_artistname").value){
         var artistname = document.getElementById("field_artistname").value;
+        var url = "http://localhost:8000/addArtist.php?q=" + artistname;
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);
         });
-        document.getElementById("field_trackAIDs").value += "|";
+        document.getElementById("field_trackAIDs").value += ",";
       }
       else {
-        document.getElementById("field_artistname").value = "binch";
+        document.getElementById("field_artistname").value = "";
       }
       //var length = document.getElementById("field_tracklength").value;
       //var genre = document.getElementById("field_trackgenre").value;
 
     }
-    function addGroup() {
-      var groupname = document.getElementById("field_groupname").value;
-      var groupyear = document.getElementById("field_groupyear").value;
-      var grouptype = document.getElementById("field_grouptype").value;
-
+    
+    function addGroup() { //Page -> PHP -| MySQL -] PHP -] Page
+      if (document.getElementById("field_groupname").value){
+        var groupname = document.getElementById("field_groupname").value;
+        var groupyear = document.getElementById("field_groupyear").value;
+        var grouptype = document.getElementById("field_grouptype").value;
+        var members = document.getElementById("field_groupmembers")
+        var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + members;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+      }
     }
-    function addAlbum() {
+
+    function addAlbum() { //Page -] PHP -] MySQL -] PHP -] Page
       var albumtitle = document.getElementById("field_albumtitle").value;
       var length = document.getElementById("field_tracklength").value;
       var genre = document.getElementById("field_trackgenre").value;
