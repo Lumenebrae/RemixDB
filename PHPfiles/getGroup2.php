@@ -50,7 +50,7 @@ if ($result1) {
     }
 }
 
-//iterate through tracks
+//iterate through track
 if ($result2) {
     while ($row = @mysqli_fetch_assoc($result2)){
         // Add to XML document node

@@ -40,7 +40,7 @@ echo 'AID="' . $row['AID'] . '" ';
 echo 'name="' . $row['Name'] . '" ';
 echo '/>';
 
-//iterate through tracks
+//iterate through track
 if ($result1) {
     while ($row = @mysqli_fetch_assoc($result1)){
         // Add to XML document node
