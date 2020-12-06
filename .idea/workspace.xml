@@ -20,10 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2cbbfe29-5ab3-49be-b134-5d6a3b32d52b" name="Default Changelist" comment="orm functions">
-      <change afterPath="$PROJECT_DIR$/js/getArtist2.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/getGroup2.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PHPfiles/addAlbum.php" beforeDir="false" afterPath="$PROJECT_DIR$/PHPfiles/addAlbum.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PHPfiles/getTrack2.php" beforeDir="false" afterPath="$PROJECT_DIR$/PHPfiles/getTrack2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PHPfiles/addTrack.php" beforeDir="false" afterPath="$PROJECT_DIR$/PHPfiles/addTrack.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PHPfiles/getArtist2.php" beforeDir="false" afterPath="$PROJECT_DIR$/PHPfiles/getArtist2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PHPfiles/getGroup2.php" beforeDir="false" afterPath="$PROJECT_DIR$/PHPfiles/getGroup2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/getArtist2.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/getGroup2.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/viewArtist.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/viewArtist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/viewGroup.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/viewGroup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +67,7 @@
       <updated>1607033469261</updated>
       <workItem from="1607033480510" duration="3403000" />
       <workItem from="1607196469544" duration="10669000" />
-      <workItem from="1607275042482" duration="1624000" />
+      <workItem from="1607275042482" duration="9655000" />
     </task>
     <task id="LOCAL-00001" summary="orm functions">
       <created>1607033586011</created>
@@ -107,22 +111,26 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="401" y="330" width="1092" height="752" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607037604956" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1607216032579">
+    <state width="1877" height="243" key="GridCell.Tab.0.bottom" timestamp="1607293852450">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607216032579" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1607216032579">
+    <state width="1877" height="243" key="GridCell.Tab.0.bottom/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607293852450" />
+    <state width="1860" height="243" key="GridCell.Tab.0.bottom/1920.124.1920.1040/0.0.1920.1160@1920.124.1920.1040" timestamp="1607284732032" />
+    <state width="1877" height="243" key="GridCell.Tab.0.center" timestamp="1607293852450">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.center/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607216032579" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1607216032579">
+    <state width="1877" height="243" key="GridCell.Tab.0.center/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607293852450" />
+    <state width="1860" height="243" key="GridCell.Tab.0.center/1920.124.1920.1040/0.0.1920.1160@1920.124.1920.1040" timestamp="1607284732032" />
+    <state width="1877" height="243" key="GridCell.Tab.0.left" timestamp="1607293852450">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.left/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607216032579" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1607216032579">
+    <state width="1877" height="243" key="GridCell.Tab.0.left/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607293852450" />
+    <state width="1860" height="243" key="GridCell.Tab.0.left/1920.124.1920.1040/0.0.1920.1160@1920.124.1920.1040" timestamp="1607284732032" />
+    <state width="1877" height="243" key="GridCell.Tab.0.right" timestamp="1607293852450">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.right/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607216032579" />
+    <state width="1877" height="243" key="GridCell.Tab.0.right/1920.124.1920.1040/0.0.1920.1160@0.0.1920.1160" timestamp="1607293852450" />
+    <state width="1860" height="243" key="GridCell.Tab.0.right/1920.124.1920.1040/0.0.1920.1160@1920.124.1920.1040" timestamp="1607284732032" />
     <state x="743" y="617" key="NewPhpFileDialog" timestamp="1607276721509">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

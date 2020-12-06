@@ -73,8 +73,10 @@
         console.log(xml);
         var user = artist[0].getAttribute('AID');
         var name = artist[0].getAttribute('name');
+        document.getElementById('track_page_header').innerHTML += name;
         document.getElementById('AID').innerHTML += user;
         document.getElementById('name').innerHTML += name;
+        document.getElementById('artist').style.display = "inherit";
 
 
         var tracks = xml.documentElement.getElementsByTagName('track');

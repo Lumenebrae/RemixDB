@@ -7,14 +7,14 @@ if (!$connection) {
 }
 
 //retrieve artist data
-$query = "select * from groups where GID= ".$q;
+$query = "select * from bandgroups where GID= ".$q;
 $resultT = mysqli_query($connection, $query);
 if (!$resultT) { #does this differentiate between null and empty? the answer: it does not.
     die('Invalid query: ' . mysqli_error($connection));
 }
 
 //retrieve associated artists
-$query = "select distinct a.name from artists as a join member on a.AID = member.AID where member.GID ='".$q."'";
+$query = "select distinct a.Name from artists as a join member on a.AID = member.AID where member.GID ='".$q."'";
 $result1 = mysqli_query($connection, $query);
 
 
@@ -38,6 +38,8 @@ echo '<info>';
 echo '<group ';
 echo 'GID="' . $row['GID'] . '" ';
 echo 'name="' . $row['Name'] . '" ';
+echo 'yearformed="' . $row['YearFormed'] . '" ';
+echo 'type="' . $row['type'] . '" ';
 echo '/>';
 
 //iterate through artists

@@ -26,9 +26,19 @@
       </div>
       <br>
 
+      <div id = 'group' class = 'div_header'>
+        Group Information:
+        <div id = 'artist_internal'  class = 'div_internal'>
+          <div id = 'GID'>Group ID: </div>
+          <div id = 'name'>Name: </div>
+          <div id = 'yearformed'>Year Formed: </div>
+          <div id = 'type'>Type: </div>
+        </div>
+      </div>
+
 
       <div id = 'tracks' class = 'div_header'>
-          Tracks this Group participated in: 
+          Tracks this Group participated in:
         <div id = 'tracks_internal'  class = 'div_internal_ol'>
           <ol id = 'tracks_list'></ol>
         </div>
@@ -65,9 +75,14 @@
         console.log(xml);
         var user = group[0].getAttribute('GID');
         var name = group[0].getAttribute('name');
+        var year = group[0].getAttribute('yearformed');
+        var type = group[0].getAttribute('type');
+        document.getElementById('track_page_header').innerHTML += name;
         document.getElementById('GID').innerHTML += user;
         document.getElementById('name').innerHTML += name;
-
+        document.getElementById('yearformed').innerHTML += year;
+        document.getElementById('type').innerHTML += type;
+        document.getElementById('group').style.display = "inherit";
 
         var tracks = xml.documentElement.getElementsByTagName('track');
         if (tracks != null){

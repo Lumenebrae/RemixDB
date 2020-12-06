@@ -19,7 +19,7 @@ $result1 = mysqli_query($connection, $query);
 
 
 //retrieve associated groups
-$query = "select distinct g.name from groups as g join member on g.GID = member.GID where member.AID ='".$q."'";
+$query = "select distinct g.Name from bandgroups as g join member on g.GID = member.GID where member.AID ='".$q."'";
 $result2 = mysqli_query($connection, $query);
 
 
