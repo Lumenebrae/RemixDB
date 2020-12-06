@@ -4,8 +4,13 @@
 <link rel="stylesheet" href="purdue_css.css">
 </head>
 <body>
-  <div style="text-align: right;"><button type="button">View Profile</button></div>
-    <h1 style="text-align: center;">REMIX DB</h1>
+	<div class = 'div_background_of_page'>
+	<div id = 'track_page_header' class = 'div_page_header'>
+		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+		    <h1 style="text-align: center;">REMIX DB</h1>
+   	</div>
+   <br>
+
       <div style="text-align: center;"><input id="searchField" classname="long" type="text" onkeyup="searchSongs()" />
         <select name="Search Type" id="searchType">
 		<option value="songs">Songs</option>
@@ -15,11 +20,12 @@
 		<option value="users">Users</option>
 </select></div>
 
-<div style="text-align: center;"><a href="temp">Submit a track</a></div>
+<div style="text-align: center;"><a href="addTrackPage.html">Submit a track</a></div>
 <div style="text-align: center;"><p id="results">Results will be displayed here.</p></div>
         <div id = 'output'  class = 'div_internal_ol'>
           <ol id = 'output_list'> </ol>
         </div>
+    </div>
 </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
