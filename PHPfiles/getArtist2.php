@@ -35,7 +35,7 @@ header("Content-type: text/xml");
 
 echo "<?xml version='1.0' ?>";
 echo '<info>';
-echo '<track ';
+echo '<artist ';
 echo 'AID="' . $row['AID'] . '" ';
 echo 'name="' . $row['Name'] . '" ';
 echo '/>';

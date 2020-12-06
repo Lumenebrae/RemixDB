@@ -62,7 +62,7 @@
       downloadUrl(url, function(data) {
         console.log(data);
         var xml = data.responseXML;
-        var album = xml.documentElement.getElementsByTagName('group');
+        var group = xml.documentElement.getElementsByTagName('group');
         console.log(xml);
         var groupName = group[0].getAttribute('name');
         document.getElementById('album_page_header').innerHTML += groupName;
