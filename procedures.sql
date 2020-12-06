@@ -1,0 +1,135 @@
+DROP PROCEDURE IF EXISTS AddTrack;
+DROP PROCEDURE IF EXISTS ConnectTrackArtist;
+DROP PROCEDURE IF EXISTS ConnectTrackGroup;
+DROP PROCEDURE IF EXISTS ConnectTrackAlbum;
+DROP PROCEDURE IF EXISTS ConnectTrackTransform;
+DROP PROCEDURE IF EXISTS MasterAddTrack;
+
+DELIMITER $$
+CREATE PROCEDURE AddTrack(
+	IN trackTitle TINYTEXT, 
+	trackLength TIME,
+    trackGenre TINYTEXT,
+    trackUID INT(20),
+    OUT trackID INT(20)
+)
+BEGIN
+	INSERT INTO track (Name, Length, Genre, UID)
+	VALUES (trackTitle, trackLength, trackGenre, trackUID);
+    SET trackID = LAST_INSERT_ID();
+END $$
+
+##############################################################################
+
+CREATE PROCEDURE ConnectTrackArtist(
+	IN trackID INT(20), 
+    artistID INT(20)
+)
+BEGIN
+	INSERT INTO trackcreditartist (TID, AID)
+	VALUES (trackID, artistID);
+END $$
+
+##############################################################################
+
+CREATE PROCEDURE ConnectTrackGroup(
+	IN trackID INT(20), 
+    groupID INT(20)
+)
+BEGIN
+	INSERT INTO trackcreditgroup (TID, GID)
+	VALUES (trackID, groupID);
+END $$
+
+##############################################################################
+
+DELIMITER $$
+CREATE PROCEDURE ConnectTrackAlbum(
+	IN trackID INT(20), 
+    albumID INT(20),
+    trackNum INT(20)
+)
+BEGIN
+	INSERT INTO albumtracks (ALID, TID, TrackNumber)
+	VALUES (albumID, trackID, trackNum);
+END $$
+
+##############################################################################
+
+CREATE PROCEDURE ConnectTrackTransform(
+	IN transformID INT(20), 
+	originalID INT(20)#,
+    #transformtype TINYTEXT
+)
+BEGIN
+	INSERT INTO remix (TransformedID, OriginalID)
+	VALUES (transformID, originalID);
+	#INSERT INTO remix (TransformedID, OriginalID, TransformType)
+	#VALUES (transformID, originalID, transformtype);
+END $$
+
+##############################################################################
+
+CREATE PROCEDURE MasterAddTrack(
+	IN trackTitle TINYTEXT, 
+	trackLength TIME,
+    trackGenre TINYTEXT,
+    trackUID INT(20),
+    artistID TINYTEXT,
+    groupID TINYTEXT,
+    albumID TINYTEXT,
+    originalID TINYTEXT,
+    transformID TINYTEXT
+)
+BEGIN
+	#example call might look like: CALL MasterAddTrack('name','1:00:00','genre', 1, "1,2,3,", "", "1,3;", "20,type;25,type;", "30,type;35,type;");
+    #things that should already exist before masteraddtrack: user with supplied UID, artists with supplied AID, Albums with supplied ALID,
+	CALL AddTrack(trackTitle, trackLength, trackGenre, trackUID, @trackID);
+    IF artistID THEN
+		WHILE (LOCATE(',', artistID) > 0)
+		DO
+			SET @value = ELT(1, artistID);
+			SET artistID = SUBSTRING(artistID, LOCATE(',', artistID) + 1);
+			CALL ConnectTrackArtist(@trackID, @value);
+		END WHILE;
+    END IF;
+    IF groupID THEN
+		WHILE (LOCATE(',', groupID) > 0)
+		DO
+			SET @value = ELT(1, groupID);
+			SET groupID = SUBSTRING(groupID, LOCATE(',', groupID) + 1);
+			CALL ConnectTrackGroup(@trackID, @value);
+		END WHILE;
+    END IF;
+	IF albumID THEN
+		WHILE (LOCATE(';', albumID) > 0)
+		DO
+			SET @value = ELT(1, albumID);
+			SET @tracknumber = SUBSTRING(@value, LOCATE(',', @value) + 1);
+			SET albumID = SUBSTRING(albumID, LOCATE(';', albumID) + 1);
+			CALL ConnectTrackAlbum(@trackID, @value, @tracknumber);
+		END WHILE;
+    END IF;
+	IF originalID THEN
+		WHILE (LOCATE(';', originalID) > 0)
+		DO
+			SET @value = ELT(1, originalID);
+			#SET @transformtype = SUBSTRING(@value, LOCATE(',', @value) + 1);
+			SET originalID = SUBSTRING(originalID, LOCATE(';', originalID) + 1);
+			CALL ConnectTrackTransform(@value, @trackID);
+			#CALL ConnectTrackTransform(@value, @trackID, @transformtype);
+		END WHILE;
+    END IF;
+	IF transformID THEN
+		WHILE (LOCATE(';', transformID) > 0)
+		DO
+			SET @value = ELT(1, transformID);
+			#SET @transformtype = SUBSTRING(@value, LOCATE(',', @value) + 1);
+			SET transformID = SUBSTRING(transformID, LOCATE(';', transformID) + 1);
+			CALL ConnectTrackTransform(@trackID, @value);
+			#CALL ConnectTrackTransform(@trackID, @value, @transformtype);
+		END WHILE;
+    END IF;
+END $$
+DELIMITER ;
+

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <div>
+<div class = 'div_background_of_page'>
+  <link rel="stylesheet" href="purdue_css.css">
+  <div class = 'div_page_header'>
     User ID (TEMP):&nbsp;
     <input
       id="field_uid"
@@ -26,6 +28,40 @@
       Genre:&nbsp;
       <input
         id="field_trackgenre"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      AID list(X;Y;...):&nbsp;
+      <input
+        id="field_trackAIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      GID list:&nbsp;
+      <input
+        id="field_trackGIDs"
+        className="long"
+        type="text"
+      />
+      ALID list:&nbsp;
+      <input
+        id="field_trackALIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      TransformedID list (1,remix;2,bootleg;...):&nbsp;
+      <input
+        id="field_trackTransformedIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      SourceID list:&nbsp;
+      <input
+        id="field_trackSourceIDs"
         className="long"
         type="text"
       />
@@ -99,29 +135,62 @@
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+    var UID = []
+    var AID = []
+    var GID = []
+    var TRID = []
+    var SID = []
+
     function addSong() {
       //null safety later
       var user = document.getElementById("field_uid").value;
       var trackname = document.getElementById("field_trackname").value;
       var length = document.getElementById("field_tracklength").value;
       var genre = document.getElementById("field_trackgenre").value;
+      var AID = document.getElementById("field_trackAIDs").value;
+      var GID = document.getElementById("field_trackGIDs").value;
+	    var ALID = document.getElementById("field_trackALIDs").value;
+      var transformedID = document.getElementById("field_trackTransformedIDs").value;
+      var originalID = document.getElementById("field_trackSourceIDs").value;
 
-
-      var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_0";
-      downloadUrl(url, function(data) {
-
-      var xml = data.responseXML;
-      console.log(xml);
-      });
+      //if (user && trackname){        
+        var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + user + "_" + AID + "_" + GID + "_" + ALID + "_" + transformedID + "_" + originalID;
+        console.log(url);
+        //what the final query should look like
+        //var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + AID + "_" + GID + "_" + "transformedID" + "_" + originalID + "_0";
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+      //}
     }
 
     function addArtist() {
+      if (document.getElementById("field_artistname").value){
+        var artistname = document.getElementById("field_artistname").value;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+        document.getElementById("field_trackAIDs").value += "|";
+      }
+      else {
+        document.getElementById("field_artistname").value = "binch";
+      }
+      //var length = document.getElementById("field_tracklength").value;
+      //var genre = document.getElementById("field_trackgenre").value;
 
     }
     function addGroup() {
+      var groupname = document.getElementById("field_groupname").value;
+      var groupyear = document.getElementById("field_groupyear").value;
+      var grouptype = document.getElementById("field_grouptype").value;
 
     }
     function addAlbum() {
+      var albumtitle = document.getElementById("field_albumtitle").value;
+      var length = document.getElementById("field_tracklength").value;
+      var genre = document.getElementById("field_trackgenre").value;
       //will need to bunch these all up into one compound request, but for now...
     }
 
