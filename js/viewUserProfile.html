@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <body>
+    <div>
+      user ID (TEMP):&nbsp;
+      <input
+        id="field_tid"
+        className="long"
+        type="text"
+      />
+
+      <button onclick="getUser()">retrieve</button>
+    </div>
+  <form>
+  <label for="username">username:</label>
+  <input type="text" id="username" name="username"><br>
+  <label for="realname">realname:</label>
+  <input type="text" id="realname" name="realname"><br>
+  <label for="email">email:</label>
+  <input type="text" id="email" name="email"><br>
+  <label for="password">password:</label>
+  <input type="text" id="password" name="password"><br>
+  <label for="confirmPassword">confirmPassword:</label>
+  <input type="text" id="confirmPassword" name="confirmPassword"><br>
+  <input type="submit" value="Submit" onclick="submitNewCredentials()">
+  </form>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    var UID;
+    var username;
+    var oldPassword;
+    var newPassword1;
+    var newPassword2;
+    var email;
+    var realname;
+    function getUser() {
+      //null safety later
+      UID = document.getElementById("field_tid").value;
+      var url = "http://localhost:8000/getUserProfile.php?q=" + UID;
+      downloadUrl(url, function(data) {
+      var xml = data.responseXML;
+      var track = xml.documentElement.getElementsByTagName('user');
+      console.log(data);
+      console.log(xml);
+      username = track[0].getAttribute('UserName');
+      realname = track[0].getAttribute('Realname');
+      oldPassword = track[0].getAttribute('Password');
+      email = track[0].getAttribute('Email');
+      newPassword1 = oldPassword;
+      newPassword2 = oldPassword;
+      document.getElementById("username").value = username;
+      document.getElementById("realname").value = realname;
+      document.getElementById("email").value = email;
+      var display = document.createElement('div');
+      display.appendChild(document.createTextNode(title + ', ' + length + ', ' + genre));
+      document.body.appendChild(display);
+      console.log(display);
+      });
+    }
+
+    function submitNewCredentials(){
+      username = document.getElementById("username").value;
+      realname = document.getElementById("realname").value;
+      email = document.getElementById("email").value;
+      if(document.getElementById("password").value.localeCompare("") != 0){
+        newPassword1 = document.getElementById("password").value;
+        newPassword2 = document.getElementById("confirmPassword").value;
+      }
+      if(newPassword1.localeCompare(newPassword2) == 0){
+      var url = "http://localhost:8000/updateUserCredentials.php?q=" + username + "_" + newPassword1 + "_" + realname + "_" + email + "_" + UID;
+      downloadUrl(url, function(data) {
+      alert("account updated successfully");
+      });
+      }else{
+        alert("passwords must match");
+      }
+
+    }
+
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+</html>

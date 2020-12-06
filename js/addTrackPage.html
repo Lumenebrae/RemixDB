@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head><link rel="stylesheet" href="purdue_css.css"></head>
+
+
+User ID (TEMP):&nbsp;
+<input
+  id="field_uid"
+  className="long"
+  type="text"
+/>
+
+<div class = 'div_background_of_page'>
+  <div class="div_page_header">Add a Track</div>
   <div>
-    User ID (TEMP):&nbsp;
-    <input
-      id="field_uid"
-      className="long"
-      type="text"
-    />
-    <p class="SongUploadHeader">Add a Song</p>
-    <form id="songform" className="inputs">
-      Song Title:&nbsp;
+    <br />
+    <div class="div_internal"  >New Track 
+      <br /> <br />
+    <form id="songform" class="div_internal" className="inputs">
+      <br /> <br />
+      Track Title:&nbsp;
       <input
         id="field_trackname"
         className="long"
@@ -29,9 +38,45 @@
         className="long"
         type="text"
       />
-    </form>
-    <button onclick="addSong()">Add Song</button>
-
+      <br /> <br />
+      AID list(X,Y,...,):&nbsp;
+      <input
+        id="field_trackAIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      GID list:&nbsp;
+      <input
+        id="field_trackGIDs"
+        className="long"
+        type="text"
+      />
+      ALID list:&nbsp;
+      <input
+        id="field_trackALIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      TransformedID list (1,remix;2,bootleg;...):&nbsp;
+      <input
+        id="field_trackTransformedIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      SourceID list:&nbsp;
+      <input
+        id="field_trackSourceIDs"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
+      <button onclick="addTrack()">Add Track</button>&nbsp;
+    </form></div>
+  </div>
+  <div class = 'div_internal'>
     <p class="ArtistUploadHeader">New Artist</p>
     <form id="artistform" className="inputs">
       Artist Name:&nbsp;
@@ -43,35 +88,44 @@
       <br /> <br />
     </form>
     <button onclick="addArtist()">Add Artist</button>
-
+  </div>
+  <div class = 'div_internal'>
     <p class="GroupUploadHeader">New Group</p>
     <form id="groupform" className="inputs">
-      Artist Name:&nbsp;
+      Name:&nbsp;
       <input
         id="field_groupname"
         className="long"
         type="text"
       />
       <br /> <br />
-      Length:&nbsp;
+      Year:&nbsp;
       <input
         id="field_groupyear"
         className="long"
         type="text"
       />
       <br /> <br />
-      Length:&nbsp;
+      Type:&nbsp;
       <input
         id="field_grouptype"
         className="long"
         type="text"
       />
       <br /> <br />
+      Members (1,2,...,):&nbsp;
+      <input
+        id="field_groupmembers"
+        className="long"
+        type="text"
+      />
+      <br /> <br />
     </form>
     <button onclick="addGroup()">Add Group</button>
-
+  </div>
+  <div class = 'div_internal'>
     <p class="AlbumUploadHeader">New Album</p>
-    <form id="artistform" className="inputs">
+    <form id="albumform" className="inputs">
       Album Name:&nbsp;
       <input
         id="field_albumtitle"
@@ -79,16 +133,16 @@
         type="text"
       />
       <br /> <br />
-      GID/AID(TEMP):&nbsp;
+      AID:&nbsp;
       <input
-        id="field_albumcredit"
+        id="field_albumartist"
         className="long"
         type="text"
       />
       <br /> <br />
-      Is this a (Group | Artist):&nbsp;
+      GID:&nbsp;
       <input
-        id="field_credittype"
+        id="field_albumgroup"
         className="long"
         type="text"
       />
@@ -96,33 +150,85 @@
     </form>
     <button onclick="addAlbum()">Add Album</button>
   </div>
+
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function addSong() {
+    var UID = []
+    var AID = []
+    var GID = []
+    var TRID = []
+    var SID = []
+
+    function addTrack() { //Page -> PHP -> MySQL -> PHP -> Page -]
       //null safety later
       var user = document.getElementById("field_uid").value;
       var trackname = document.getElementById("field_trackname").value;
       var length = document.getElementById("field_tracklength").value;
       var genre = document.getElementById("field_trackgenre").value;
+      var AID = document.getElementById("field_trackAIDs").value;
+      var GID = document.getElementById("field_trackGIDs").value;
+	    var ALID = document.getElementById("field_trackALIDs").value;
+      var transformedID = document.getElementById("field_trackTransformedIDs").value;
+      var originalID = document.getElementById("field_trackSourceIDs").value;
 
-
-      var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_0";
-      downloadUrl(url, function(data) {
-
-      var xml = data.responseXML;
-      console.log(xml);
-      });
+      if (user && trackname){        
+        var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + user + "_" + AID + "_" + GID + "_" + ALID + "_" + transformedID + "_" + originalID;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+      } else {
+        console.log("Missing critical fields!")
+      }
     }
 
-    function addArtist() {
+    function addArtist() { //Page -> PHP -> MySQL -> PHP -> Page -]
+      if (document.getElementById("field_artistname").value){
+        var artistname = document.getElementById("field_artistname").value;
+        var url = "http://localhost:8000/addArtist.php?q=" + artistname;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+        document.getElementById("field_trackAIDs").value += ",";
+      }
+      else {
+        document.getElementById("field_artistname").value = "";
+      }
+      //var length = document.getElementById("field_tracklength").value;
+      //var genre = document.getElementById("field_trackgenre").value;
 
     }
-    function addGroup() {
+    
+    function addGroup() { //Page -> PHP -> MySQL -> PHP -> Page -]
+      var groupname = document.getElementById("field_groupname").value;
+      var groupyear = document.getElementById("field_groupyear").value;
+      var grouptype = document.getElementById("field_grouptype").value;
+      var groupmembers = document.getElementById("field_groupmembers").value;
 
+      if (document.getElementById("field_groupname").value){
+        var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + groupmembers;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+      }
     }
-    function addAlbum() {
-      //will need to bunch these all up into one compound request, but for now...
+
+    function addAlbum() { //Page -] PHP -> MySQL -> PHP -> Page -]
+      var albumartist = document.getElementById("field_albumartist").value;
+      var albumgroup = document.getElementById("field_albumgroup").value;
+      var albumtitle = document.getElementById("field_albumtitle").value;
+
+      if (document.getElementById("field_albumtitle").value){
+        var url = "http://localhost:8000/addAlbum.php?q=" + albumartist + "_" + albumgroup + "_" + albumtitle;
+        downloadUrl(url, function(data) {
+        var xml = data.responseXML;
+        console.log(xml);
+        });
+      }
+      //will need to bunch these all up into one compound request
     }
 
 
@@ -147,11 +253,4 @@
 
 
   </script>
-  <!--
-    <script>
-    function verify(elmnt,clr) {
-      elmnt.style.color = clr;
-    }
-    </script>
-  -->
 </html>
