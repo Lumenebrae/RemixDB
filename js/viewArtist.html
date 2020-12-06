@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <link rel="stylesheet" href="purdue_css.css">
+  </head>
+
+
+  <body>
+
+    <div>
+
+      Artist ID (TEMP):&nbsp;
+      <input
+        id="field_aid"
+        className="long"
+        type="text"
+      />
+
+      <button onclick="getArtist()">retrieve</button>
+    </div>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class = 'div_background_of_page'>
+      <div id = 'track_page_header' class = 'div_page_header'>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+      </div>
+      <br>
+
+      <div id = 'artist' class = 'div_header'>
+        Artist Information:
+        <div id = 'artist_internal'  class = 'div_internal'>
+          <div id = 'artist_ID'>Artist ID: </div>
+          <div id = 'artist_name'>Name: </div>
+        </div>
+      </div>
+
+
+      <div id = 'tracks' class = 'div_header'>
+        Tracks Artist is in:
+        <div id = 'tracks_internal'  class = 'div_internal_ol'>
+          <ol id = 'tracks_list'></ol>
+        </div>
+      </div>
+
+
+      <div id = 'groups' class = 'div_header'>
+        Groups Artist is in:
+        <div id = 'group_internal'  class = 'div_internal_ol'>
+          <ol id = 'group_list'> </ol>
+        </div>
+      </div>
+
+      <div id = 'albums' class = 'div_header'>
+        Albums Artist is in:
+        <div id = 'track_internal'  class = 'div_internal_ol'>
+          <ol id = 'album_list'> </ol>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function getArtist() {
+      //null safety later
+      var aid = document.getElementById("field_aid").value;
+      var url = "http://localhost:8000/getArtist2.php?q=" + aid;
+
+      downloadUrl(url, function(data) {
+        console.log(data);
+        var xml = data.responseXML;
+        var artist = xml.documentElement.getElementsByTagName('artist');
+        console.log(xml);
+        var user = artist[0].getAttribute('AID');
+        var name = artist[0].getAttribute('artistName');
+        document.getElementById('artist_id').innerHTML += user;
+        document.getElementById('artist_name').innerHTML += name;
+
+
+        var tracks = xml.documentElement.getElementsByTagName('track');
+        if (tracks != null){
+          for (x of tracks) {
+            document.getElementById('tracks').style.display = "inherit";
+            var names = x.getAttribute('title');
+            document.getElementById('tracks_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+
+        var groups = xml.documentElement.getElementsByTagName('group');
+        if (groups != null){
+          for (x of groups) {
+            document.getElementById('groups').style.display = "inherit";
+            var aid = x.getAttribute('GID');
+            var names = x.getAttribute('name');
+            document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+        var albums = xml.documentElement.getElementsByTagName('album');
+        if (albums != null){
+          for (x of albums) {
+            document.getElementById('albums').style.display = "inherit";
+            var aid = x.getAttribute('ALID');
+            var names = x.getAttribute('name');
+            document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+      });
+    }
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+</html>
