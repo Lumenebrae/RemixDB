@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head><link rel="stylesheet" href="purdue_css.css"></head>
-
-
-User ID (TEMP):&nbsp;
-<input
-  id="field_uid"
-  className="long"
-  type="text"
-/>
-
+  User ID (TEMP):&nbsp;
+  <input
+    id="field_uid"
+    className="long"
+    type="text"
+  />
 <div class = 'div_background_of_page'>
-  <div class="div_page_header">Add a Track</div>
-  <div>
-    <br />
-    <div class="div_internal"  >New Track 
-      <br /> <br />
-    <form id="songform" class="div_internal" className="inputs">
-      <br /> <br />
-      Track Title:&nbsp;
+  <div class = 'div_internal'>
+    <p class="div_page_header">Add a Song</p>
+    <form id="songform" className="inputs">
+      Song Title:&nbsp;
       <input
         id="field_trackname"
         className="long"
@@ -39,7 +32,7 @@ User ID (TEMP):&nbsp;
         type="text"
       />
       <br /> <br />
-      AID list(X,Y,...,):&nbsp;
+      AID list(X;Y;...):&nbsp;
       <input
         id="field_trackAIDs"
         className="long"
@@ -72,11 +65,9 @@ User ID (TEMP):&nbsp;
         className="long"
         type="text"
       />
-      <br /> <br />
-      <button onclick="addTrack()">Add Track</button>&nbsp;
-    </form></div>
-  </div>
-  <div class = 'div_internal'>
+    </form>
+    <button onclick="addTrack()">Add Track</button>
+
     <p class="ArtistUploadHeader">New Artist</p>
     <form id="artistform" className="inputs">
       Artist Name:&nbsp;
@@ -88,8 +79,7 @@ User ID (TEMP):&nbsp;
       <br /> <br />
     </form>
     <button onclick="addArtist()">Add Artist</button>
-  </div>
-  <div class = 'div_internal'>
+
     <p class="GroupUploadHeader">New Group</p>
     <form id="groupform" className="inputs">
       Name:&nbsp;
@@ -113,7 +103,7 @@ User ID (TEMP):&nbsp;
         type="text"
       />
       <br /> <br />
-      Members (1,2,...,):&nbsp;
+      Members (1,2...):&nbsp;
       <input
         id="field_groupmembers"
         className="long"
@@ -122,8 +112,7 @@ User ID (TEMP):&nbsp;
       <br /> <br />
     </form>
     <button onclick="addGroup()">Add Group</button>
-  </div>
-  <div class = 'div_internal'>
+
     <p class="AlbumUploadHeader">New Album</p>
     <form id="albumform" className="inputs">
       Album Name:&nbsp;
@@ -150,7 +139,6 @@ User ID (TEMP):&nbsp;
     </form>
     <button onclick="addAlbum()">Add Album</button>
   </div>
-
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
@@ -172,15 +160,13 @@ User ID (TEMP):&nbsp;
       var transformedID = document.getElementById("field_trackTransformedIDs").value;
       var originalID = document.getElementById("field_trackSourceIDs").value;
 
-      if (user && trackname){        
+      //if (user && trackname){        
         var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + user + "_" + AID + "_" + GID + "_" + ALID + "_" + transformedID + "_" + originalID;
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);
         });
-      } else {
-        console.log("Missing critical fields!")
-      }
+      //}
     }
 
     function addArtist() { //Page -> PHP -> MySQL -> PHP -> Page -]
