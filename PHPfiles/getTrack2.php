@@ -17,15 +17,18 @@ $query = "select * from artists where AID in (select AID from trackcreditartist 
 $resultA = mysqli_query($connection, $query);
 
 //retrieve associated groups
-$query = "select * from groups where GID in (select GID from trackcreditgroup where TID=".$q.")";
+$query = "select * from bandgroups where GID in (select GID from trackcreditgroup where TID=".$q.")";
 $resultG = mysqli_query($connection, $query);
 
+$query = "select * from albums where ALID in (select ALID from albumtracks where TID=".$q.")";
+$resultAL = mysqli_query($connection, $query);
+
 //retrieve associated remixes. Should use a join later to access transformation type and artist
-$query = "select * from track where TID in (select TransformedID from remix where OriginalID=".$q.")";
+$query = "select * from track where TID in (select TransfromedID from remix where OriginalID=".$q.")";
 $resultR = mysqli_query($connection, $query);
 
 //retrieve associated sources. Should use a join later to access transformation type and artist
-$query = "select * from track where TID in (select OriginalID from remix where TransformedID=".$q.")";
+$query = "select * from track where TID in (select OriginalID from remix where TransfromedID=".$q.")";
 $resultS = mysqli_query($connection, $query);
 
 $row = @mysqli_fetch_assoc($resultT);
@@ -48,7 +51,7 @@ if ($resultA) {
         // Add to XML document node
         echo '<artist ';
         echo 'AID="' . $row['AID'] . '" ';
-        echo 'name="' . $row['Name'] . '" ';
+        echo 'artistName="' . $row['artistName'] . '" ';
         echo '/>';
     }
 }
@@ -59,7 +62,19 @@ if ($resultG) {
         // Add to XML document node
         echo '<group ';
         echo 'GID="' . $row['GID'] . '" ';
-        echo 'name="' . $row['Name'] . '" ';
+        echo 'name="' . $row['Title'] . '" ';
+        echo 'year="' . $row['YearFormed'] . '" ';
+        echo 'type="' . $row['type'] . '" ';
+        echo '/>';
+    }
+}
+
+if ($resultAL) {
+    while ($row = @mysqli_fetch_assoc($resultAL)){
+        // Add to XML document node
+        echo '<album ';
+        echo 'ALID="' . $row['ALID'] . '" ';
+        echo 'name="' . $row['albumName'] . '" ';
         echo '/>';
     }
 }
@@ -70,7 +85,7 @@ if ($resultR) {
         // Add to XML document node
         echo '<remix ';
         echo 'TID="' . $row['TID'] . '" ';
-        echo 'title="' . $row['Title'] . '" ';
+        echo 'title="' . $row['Name'] . '" ';
         echo '/>';
     }
 }
@@ -81,7 +96,7 @@ if ($resultS) {
         // Add to XML document node
         echo '<source ';
         echo 'TID="' . $row['TID'] . '" ';
-        echo 'title="' . $row['Title'] . '" ';
+        echo 'title="' . $row['Name'] . '" ';
         echo '/>';
     }
 }

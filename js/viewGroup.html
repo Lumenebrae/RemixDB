@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <link rel="stylesheet" href="purdue_css.css">
+  </head>
+
+
+  <body>
+
+    <div>
+
+      Group ID (TEMP):&nbsp;
+      <input
+        id="field_gid"
+        className="long"
+        type="text"
+      />
+
+      <button onclick="getGroup()">retrieve</button>
+    </div>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+    <div class = 'div_background_of_page'>
+      <div id = 'track_page_header' class = 'div_page_header'>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+      </div>
+      <br>
+
+
+      <div id = 'artists' class = 'div_header'>
+        Artists who are present in this Group:
+        <div id = 'artist_internal'  class = 'div_internal_ol'>
+          <ol id = 'artist_list'></ol>
+        </div>
+      </div>
+
+
+      <div id = 'tracks' class = 'div_header'>
+        Tracks this Group participated in:
+        <div id = 'tracks_internal'  class = 'div_internal_ol'>
+          <ol id = 'tracks_list'></ol>
+        </div>
+      </div>
+
+
+      <div id = 'albums' class = 'div_header'>
+        Albums this Group participated in:
+        <div id = 'tracks_internal'  class = 'div_internal_ol'>
+          <ol id = 'album_list'> </ol>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function getGroup() {
+      //null safety later
+      var gid = document.getElementById("field_gid").value;
+      var url = "http://localhost:8000/getGroup2.php?q=" + gid;
+
+      downloadUrl(url, function(data) {
+        console.log(data);
+        var xml = data.responseXML;
+        var album = xml.documentElement.getElementsByTagName('group');
+        console.log(xml);
+        var groupName = group[0].getAttribute('name');
+        document.getElementById('album_page_header').innerHTML += groupName;
+
+
+        var artists = xml.documentElement.getElementsByTagName('artist');
+        if (artists != null){
+          for (x of artists) {
+            document.getElementById('artists').style.display = "inherit";
+            var names = x.getAttribute('artistName');
+            console.log(names);
+            document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+        var tracks = xml.documentElement.getElementsByTagName('track');
+        if (tracks != null){
+          for (x of tracks) {
+            document.getElementById('tracks').style.display = "inherit";
+            var names = x.getAttribute('title');
+            document.getElementById('tracks_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+
+        var albums = xml.documentElement.getElementsByTagName('album');
+        if (albums != null){
+          for (x of albums) {
+            document.getElementById('albums').style.display = "inherit";
+            var aid = x.getAttribute('ALID');
+            var names = x.getAttribute('name');
+            document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
+          }
+        }
+      });
+    }
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+            request.onreadystatechange = function() {
+              if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+              }
+            };
+
+        request.open('GET', url, true);
+        request.send(null);
+        return 0;
+    }
+
+    function doNothing() {}
+
+
+  </script>
+</html>

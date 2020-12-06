@@ -1,4 +1,4 @@
-<?php
+<?php 
 //$file = $_POST;
 //$data = json_decode(file_get_contents('php://input'), true);
 $q = $_REQUEST["q"];
