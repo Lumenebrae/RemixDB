@@ -9,14 +9,14 @@
 
     <div>
 
-      Artist ID (TEMP):&nbsp;
+      Group ID (TEMP):&nbsp;
       <input
-        id="field_aid"
+        id="field_gid"
         className="long"
         type="text"
       />
 
-      <button onclick="getArtist()">retrieve</button>
+      <button onclick="getGroup()">retrieve</button>
     </div>
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
@@ -61,19 +61,19 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function getArtist() {
+    function getGroup() {
       //null safety later
-      var aid = document.getElementById("field_aid").value;
-      var url = "http://localhost:8000/getArtist2.php?q=" + aid;
+      var gid = document.getElementById("field_gid").value;
+      var url = "http://localhost:8000/getGroup2.php?q=" + gid;
 
       downloadUrl(url, function(data) {
         console.log(data);
         var xml = data.responseXML;
-        var artist = xml.documentElement.getElementsByTagName('artist');
+        var group = xml.documentElement.getElementsByTagName('group');
         console.log(xml);
-        var user = artist[0].getAttribute('AID');
-        var name = artist[0].getAttribute('name');
-        document.getElementById('AID').innerHTML += user;
+        var user = group[0].getAttribute('GID');
+        var name = group[0].getAttribute('name');
+        document.getElementById('GID').innerHTML += user;
         document.getElementById('name').innerHTML += name;
 
 
@@ -87,13 +87,13 @@
         }
 
 
-        var groups = xml.documentElement.getElementsByTagName('group');
-        if (groups != null){
-          for (x of groups) {
-            document.getElementById('groups').style.display = "inherit";
-            var aid = x.getAttribute('GID');
+        var artists = xml.documentElement.getElementsByTagName('artist');
+        if (artists != null){
+          for (x of artists) {
+            document.getElementById('artists').style.display = "inherit";
             var names = x.getAttribute('name');
-            document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
+            console.log(names);
+            document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
           }
         }
 

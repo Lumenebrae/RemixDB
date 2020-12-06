@@ -36,7 +36,7 @@ header("Content-type: text/xml");
 echo "<?xml version='1.0' ?>";
 echo '<info>';
 echo '<group ';
-echo 'AID="' . $row['GID'] . '" ';
+echo 'GID="' . $row['GID'] . '" ';
 echo 'name="' . $row['Name'] . '" ';
 echo '/>';
 
@@ -45,7 +45,7 @@ if ($result1) {
     while ($row = @mysqli_fetch_assoc($result1)){
         // Add to XML document node
         echo '<artist ';
-        echo 'artistName="' . $row['artistName'] . '" ';
+        echo 'name="' . $row['Name'] . '" ';
         echo '/>';
     }
 }
