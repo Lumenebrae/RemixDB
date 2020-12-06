@@ -147,7 +147,7 @@ CREATE PROCEDURE AddGroup(
     OUT groupID INT(20)
 )
 BEGIN
-	INSERT INTO `groups` (Name, YearFormed, type)
+	INSERT INTO `bandgroups` (Name, YearFormed, type)
 	VALUES (groupName, groupYear, groupType);
     SET groupID = LAST_INSERT_ID();
 END $$
