@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en-US">
+  <head><link rel="stylesheet" href="purdue_css.css"></head>
+
+
+User ID (TEMP):&nbsp;
+<input
+  id="field_uid"
+  className="long"
+  type="text"
+/>
+
 <div class = 'div_background_of_page'>
-  <link rel="stylesheet" href="purdue_css.css">
-  <div class = 'div_internal'>
-    User ID (TEMP):&nbsp;
-    <input
-      id="field_uid"
-      className="long"
-      type="text"
-    />
-    <p class="div_page_header">Add a Track</p>
+  <div class="div_page_header">Add a Track</div>
+  <div>
     <br />
-    New Track
-    <form id="songform" className="inputs">
+    <div class="div_internal"  >New Track 
+      <br /> <br />
+    <form id="songform" class="div_internal" className="inputs">
       <br /> <br />
       Track Title:&nbsp;
       <input
@@ -35,7 +39,7 @@
         type="text"
       />
       <br /> <br />
-      AID list(X;Y;...):&nbsp;
+      AID list(X,Y,...,):&nbsp;
       <input
         id="field_trackAIDs"
         className="long"
@@ -68,8 +72,9 @@
         className="long"
         type="text"
       />
-    </form>
-    <button onclick="addTrack()">Add Track</button>&nbsp;
+      <br /> <br />
+      <button onclick="addTrack()">Add Track</button>&nbsp;
+    </form></div>
   </div>
   <div class = 'div_internal'>
     <p class="ArtistUploadHeader">New Artist</p>
@@ -108,7 +113,7 @@
         type="text"
       />
       <br /> <br />
-      Members (1,2...):&nbsp;
+      Members (1,2,...,):&nbsp;
       <input
         id="field_groupmembers"
         className="long"
