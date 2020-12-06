@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en-US">
+<head>
+<link rel="stylesheet" href="purdue_css.css">
+</head>
+<body>
   <div style="text-align: right;"><button type="button">View Profile</button></div>
     <h1 style="text-align: center;">REMIX DB</h1>
       <div style="text-align: center;"><input id="searchField" classname="long" type="text" onkeyup="searchSongs()" />
         <select name="Search Type" id="searchType">
-<option value="songs">Songs</option>
-<option value="artists">Artists</option>
-<option value="albums">Albums</option>
-<option value="groups">Groups</option>
-<option value="users">Users</option>
+		<option value="songs">Songs</option>
+		<option value="artists">Artists</option>
+		<option value="albums">Albums</option>
+		<option value="groups">Groups</option>
+		<option value="users">Users</option>
 </select></div>
+
 <div style="text-align: center;"><a href="temp">Submit a track</a></div>
 <div style="text-align: center;"><p id="results">Results will be displayed here.</p></div>
-<div id="output"></div>
+        <div id = 'output'  class = 'div_internal_ol'>
+          <ol id = 'output_list'> </ol>
+        </div>
+</body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     var delayTimer;
+    var tracksList = [];
+    var tidsList = [];
     function searchSongs() {
             //http://localhost:8000/addTrack.php?q=asdf_00:02:00_rap_4231
       //null safety later
@@ -32,12 +42,15 @@
             downloadUrl(url, function(data) {
               var xml = data.responseXML;
               var tracks = xml.documentElement.getElementsByTagName('track');
-              var tracksList = [];
+              tracksList = [];
+              tidsList = [];
               for (x = 0; x < tracks.length; x++){
                 tracksList.push(tracks[x].getAttribute('Name'));
+                tidsList.push(tracks[x].getAttribute('TID'));
               }
               document.getElementById('output').innerHTML = "";
-              document.getElementById('output').appendChild(makeUL(tracksList));
+              document.getElementById('output').appendChild(makeUL(tracksList, tidsList));
+
             });
           }else{
             console.log(selection.value);
@@ -45,25 +58,37 @@
         }, 1000);
     }
 
-    function makeUL(array) {
+    function makeUL(array, arrayid) {
     // Create the list element:
-    var list = document.createElement('ul');
+    var list = document.createElement('ol');
 
     for(var i = 0; i < array.length; i++) {
-        // Create the list item:
-        var item = document.createElement('li');
+    	document.getElementById('output').innerHTML += "<li id = " + arrayid[i].toString() + ">" + array[i] +"</li>";
 
-        // Set its contents:
-        item.appendChild(document.createTextNode(array[i]));
-
-        // Add it to the list:
-        list.appendChild(item);
     }
+	var g = document.getElementById('output');
+	for (var i = 0, len = g.children.length; i < len; i++)
+	{
 
+    	(function(index){
+       		g.children[i].onclick = function(){
+       			console.log(tidsList[index]);
+       			localStorage.setItem('passingTID', tidsList[index]);
+       			window.location.href = "viewTrack.html";
+        	}
+    	})(i);
+
+	}
     // Finally, return the constructed list:
     return list;
 }
 
+    function passvalue(value){
+    	console.log(value);
+    	localStorage.setItem('passingTID', value);
+    	//window.location.href="viewTrack.html";
+    	return false;
+    }
 
 function doSearch(text) {
     clearTimeout(delayTimer);
@@ -88,6 +113,10 @@ function doSearch(text) {
         request.send(null);
         return 0;
     }
+
+
+
+
 
     function doNothing() {}
 
