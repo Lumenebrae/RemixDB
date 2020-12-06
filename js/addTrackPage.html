@@ -163,8 +163,6 @@
       //if (user && trackname){        
         var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + user + "_" + AID + "_" + GID + "_" + ALID + "_" + transformedID + "_" + originalID;
         console.log(url);
-        //what the final query should look like
-        //var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + AID + "_" + GID + "_" + "transformedID" + "_" + originalID + "_0";
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);
@@ -191,12 +189,14 @@
     }
     
     function addGroup() { //Page -> PHP -| MySQL -] PHP -] Page
+      var groupname = document.getElementById("field_groupname").value;
+      var groupyear = document.getElementById("field_groupyear").value;
+      var grouptype = document.getElementById("field_grouptype").value;
+      var members = document.getElementById("field_groupmembers").value;
+      
       if (document.getElementById("field_groupname").value){
-        var groupname = document.getElementById("field_groupname").value;
-        var groupyear = document.getElementById("field_groupyear").value;
-        var grouptype = document.getElementById("field_grouptype").value;
-        var members = document.getElementById("field_groupmembers")
         var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + members;
+        console.log(url);
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);

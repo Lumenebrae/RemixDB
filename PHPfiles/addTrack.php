@@ -12,7 +12,6 @@ $GID = $inputArray[5];
 $ALID = $inputArray[6];
 $ORID = $inputArray[7];
 $TRID = $inputArray[8];
-$id= -1;
 
 $con = mysqli_connect('127.0.0.1',  "Lumenebrae", 'bombkirby9bombkirby9', 'remixdbz');
 if (!$con) {
@@ -25,9 +24,9 @@ try {
     //auto incrementing ids enabled on tables, so no longer need to calculate it.
 
     $query = "SET @id = ''"; //create output variable
-    $result = mysqli_query($con, $query);
+    mysqli_query($con, $query);
     $query = "CALL MasterAddTrack('".$name."','".$length."','".$genre."',".$UID.",'".$AID."','".$GID."','".$ALID."','".$ORID."','".$TRID."', @id)";
-    $result = mysqli_query($con, $query);
+    mysqli_query($con, $query);
     $query = "SELECT @id AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);
     $row = @mysqli_fetch_assoc($result);
@@ -39,6 +38,7 @@ try {
     echo '<id>';
     echo 'id="' . $row['id'] . '" ';
     echo '</id>';
+
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);
     throw $exception;

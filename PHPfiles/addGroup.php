@@ -15,28 +15,29 @@ if (!$con) {
 }
 
 mysqli_begin_transaction($con);
-
 try {
     mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
-    /*$query = "INSERT INTO `groups` (Name, YearFormed, Type)
-          VALUES 
-          ('".$name."',
-           '".$yearFormed."',
-           '".$type."')";
+    //auto incrementing ids enabled on tables, so no longer need to calculate it.
+
+    $query = "SET @gid = ''"; //create output variable
+    mysqli_query($con, $query);
+    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @gid)";
+    mysqli_query($con, $query);
+    $query = "SELECT @gid AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);
-    */
-
-
+    $row = @mysqli_fetch_assoc($result);
     mysqli_commit($con);
+
+    //send the trackID back
+    header('Access-Control-Allow-Origin: *');
+    header("Content-type: text/xml");
+    echo '<id>';
+    echo 'id="' . $row['id'] . '" ';
+    echo '</id>';
+
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);
     throw $exception;
 }
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: text/xml');
-echo "<?xml version='1.0' ?>";
-echo '<id>';
-//echo 'id="' . $row['@id'] . '" ';
-echo '</id>';
 $con->close();
