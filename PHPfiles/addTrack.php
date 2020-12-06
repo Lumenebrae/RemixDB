@@ -13,7 +13,7 @@ $ALID = $inputArray[6];
 $ORID = $inputArray[7];
 $TRID = $inputArray[8];
 
-$con = mysqli_connect('127.0.0.1',  "Lumenebrae", 'bombkirby9bombkirby9', 'remixdbz');
+$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }

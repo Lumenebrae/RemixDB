@@ -8,8 +8,7 @@ $yearFormed = $inputArray[1];
 $type = $inputArray[2];
 $members = $inputArray[3];
 
-#$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
-$con = mysqli_connect('127.0.0.1',  "Lumenebrae", 'bombkirby9bombkirby9', 'remixdbz');
+$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -19,11 +18,11 @@ try {
     mysqli_query($con,"SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED");
     //auto incrementing ids enabled on tables, so no longer need to calculate it.
 
-    $query = "SET @gid = ''"; //create output variable
+    $query = "SET @id = ''"; //create output variable
     mysqli_query($con, $query);
-    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @gid)";
+    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
     mysqli_query($con, $query);
-    $query = "SELECT @gid AS id"; // fetch the output variable
+    $query = "SELECT @id AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);
     $row = @mysqli_fetch_assoc($result);
     mysqli_commit($con);
