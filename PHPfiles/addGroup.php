@@ -8,7 +8,7 @@ $yearFormed = $inputArray[1];
 $type = $inputArray[2];
 $members = $inputArray[3];
 
-$con = mysqli_connect('127.0.0.1', "Lumenebrae", 'bombkirby9bombkirby9', 'cs350');
+$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -20,7 +20,15 @@ try {
 
     $query = "SET @id = ''"; //create output variable
     mysqli_query($con, $query);
-    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
+    if ($type == "" && $yearFormed == ""){
+        $query = "CALL MasterAddGroup('".$name."', null, null, '".$members."', @id)";
+    }else if($type == ""){
+        $query = "CALL MasterAddGroup('".$name."','".$yearFormed."', null, '".$members."', @id)";
+    }else if($yearFormed == ""){
+        $query = "CALL MasterAddGroup('".$name."', null,'".$type."','".$members."', @id)";
+    }else{
+        $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
+    }
     mysqli_query($con, $query);
     $query = "SELECT @id AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);

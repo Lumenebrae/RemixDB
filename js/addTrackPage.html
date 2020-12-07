@@ -206,7 +206,7 @@
         });
       }
       else {
-        document.getElementById("field_artistname").value = "";
+        alert("please provide the artist's name")
       }
       //var length = document.getElementById("field_tracklength").value;
       //var genre = document.getElementById("field_trackgenre").value;
@@ -218,19 +218,23 @@
       var groupyear = document.getElementById("field_groupyear").value;
       var grouptype = document.getElementById("field_grouptype").value;
       var groupmembers = document.getElementById("field_groupmembers").value;
-
-      if (document.getElementById("field_groupname").value){
-        var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + groupmembers;
-        downloadUrl(url, function(data) {
-          var xml = data.responseXML;
-          console.log(xml);
-          var ids = xml.documentElement.getElementsByTagName('id');
-          if (ids != null){
-            document.getElementById("field_trackGIDs").value += ids[0].getAttribute("id");
-            document.getElementById("field_trackGIDs").value += ",";
-          } 
-          else {alert("oops!");}
-        });
+      if (groupname){
+        if (document.getElementById("field_groupname").value){
+          var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + groupmembers;
+          downloadUrl(url, function(data) {
+            var xml = data.responseXML;
+            console.log(xml);
+            var ids = xml.documentElement.getElementsByTagName('id');
+            if (ids != null){
+              document.getElementById("field_trackGIDs").value += ids[0].getAttribute("id");
+              document.getElementById("field_trackGIDs").value += ",";
+            } 
+            else {alert("oops!");}
+          });
+        }
+      }
+      else {
+        alert("please provide the group's name")
       }
     }
 
@@ -238,20 +242,24 @@
       var albumartist = document.getElementById("field_albumartist").value;
       var albumgroup = document.getElementById("field_albumgroup").value;
       var albumtitle = document.getElementById("field_albumtitle").value;
-
-      if (document.getElementById("field_albumtitle").value){
-        var url = "http://localhost:8000/addAlbum.php?q=" + albumartist + "_" + albumgroup + "_" + albumtitle;
-        downloadUrl(url, function(data) {
-          var xml = data.responseXML;
-          console.log(xml);
-          var ids = xml.documentElement.getElementsByTagName('id');
-          if (ids != null){
-            document.getElementById("field_trackALIDs").value += ids[0].getAttribute("id");
-            document.getElementById("field_trackALIDs").value += ",";
-          } 
-          else {alert("oops!");}
-        }
-      )};
+      if (albumtitle){
+        if (document.getElementById("field_albumtitle").value){
+          var url = "http://localhost:8000/addAlbum.php?q=" + albumartist + "_" + albumgroup + "_" + albumtitle;
+          downloadUrl(url, function(data) {
+            var xml = data.responseXML;
+            console.log(xml);
+            var ids = xml.documentElement.getElementsByTagName('id');
+            if (ids != null){
+              document.getElementById("field_trackALIDs").value += ids[0].getAttribute("id");
+              document.getElementById("field_trackALIDs").value += ",";
+            } 
+            else {alert("oops!");}
+          }
+        )};
+      }
+      else {
+        alert("please provide the album's title")
+      }
       //will need to bunch these all up into one compound request
     }
 
