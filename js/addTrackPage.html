@@ -13,138 +13,145 @@
     <a href="trackSearchPage.html">RemixDB</a>
   </div>
   <br>
-<div class = 'div_background_of_page'>
-  <div class = ''>
-    <form id="songform" class = 'div_internal' className="inputs">
-      <p class= 'div_header2' >New Track</p>
-      Title:&nbsp;
-      <input
-        id="field_trackname"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      Length:&nbsp;
-      <input
-        id="field_tracklength"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      Genre:&nbsp;
-      <input
-        id="field_trackgenre"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      AID list(X;Y;...):&nbsp;
-      <input
-        id="field_trackAIDs"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      GID list:&nbsp;
-      <input
-        id="field_trackGIDs"
-        className="long"
-        type="text"
-      />
-      ALID list:&nbsp;
-      <input
-        id="field_trackALIDs"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      TransformedID list (1,remix;2,bootleg;...):&nbsp;
-      <input
-        id="field_trackTransformedIDs"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      SourceID list:&nbsp;
-      <input
-        id="field_trackSourceIDs"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
+  <div class = 'div_background_of_page'>
+    <div class = 'div_internal'>
+      <form id="songform" className="inputs">
+        <p class= 'div_header2' >New Track</p>
+        Title:&nbsp;
+        <input
+          id="field_trackname"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        Length:&nbsp;
+        <input
+          id="field_tracklength"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        Genre:&nbsp;
+        <input
+          id="field_trackgenre"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        AID list(X,Y,...,):&nbsp;
+        <input
+          id="field_trackAIDs"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        GID list:&nbsp;
+        <input
+          id="field_trackGIDs"
+          className="long"
+          type="text"
+        />
+        ALID list:&nbsp;
+        <input
+          id="field_trackALIDs"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        TransformedID list (1,remix;2,bootleg;...;):&nbsp;
+        <input
+          id="field_trackTransformedIDs"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        SourceID list:&nbsp;
+        <input
+          id="field_trackSourceIDs"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+      </form>
       <button onclick="addTrack()">Add Track</button>
-    </form>
-
-    <form id="artistform" class = 'div_internal' className="inputs">
-      <p class="div_header2">New Artist</p>
-      Artist Name:&nbsp;
-      <input
-        id="field_artistname"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
+    </div>
+    
+    <div class = 'div_internal'>
+      <form id="artistform" className="inputs">
+        <p class="div_header2">New Artist</p>
+        Artist Name:&nbsp;
+        <input
+          id="field_artistname"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+      </form>
       <button onclick="addArtist()">Add Artist</button>
-    </form>
+    </div>
 
-    <form id="groupform" class = 'div_internal' className="inputs">
-      <p class="div_header2">New Group</p>
-      Name:&nbsp;
-      <input
-        id="field_groupname"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      Year:&nbsp;
-      <input
-        id="field_groupyear"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      Type:&nbsp;
-      <input
-        id="field_grouptype"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      Members (1,2...):&nbsp;
-      <input
-        id="field_groupmembers"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
+    <div class = 'div_internal'>
+      <form id="groupform" className="inputs">
+        <p class="div_header2">New Group</p>
+        Name:&nbsp;
+        <input
+          id="field_groupname"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        Year:&nbsp;
+        <input
+          id="field_groupyear"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        Type:&nbsp;
+        <input
+          id="field_grouptype"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        Members (1,2...,):&nbsp;
+        <input
+          id="field_groupmembers"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+      </form>
       <button onclick="addGroup()">Add Group</button>
-    </form>
+    </div>
 
-    <form id="albumform" class="div_internal" className="inputs">
-      <p class="div_header2">New Album</p>
-      Album Name:&nbsp;
-      <input
-        id="field_albumtitle"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      AID:&nbsp;
-      <input
-        id="field_albumartist"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      GID:&nbsp;
-      <input
-        id="field_albumgroup"
-        className="long"
-        type="text"
-      />
-      <br /> <br />
-      <button onclick="addAlbum()">Add Album</button>
-    </form>
+    <div class = 'div_internal'>
+      <form id="albumform" className="inputs">
+        <p class="div_header2">New Album</p>
+        Album Name:&nbsp;
+        <input
+          id="field_albumtitle"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        AID:&nbsp;
+        <input
+          id="field_albumartist"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        GID:&nbsp;
+        <input
+          id="field_albumgroup"
+          className="long"
+          type="text"
+        />
+        <br /> <br />
+        <button onclick="addAlbum()">Add Album</button>
+      </form>
+    </div>
   </div>
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
