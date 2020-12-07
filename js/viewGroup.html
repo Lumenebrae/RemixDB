@@ -5,24 +5,12 @@
   </head>
 
 
-  <body>
-
-    <div>
-
-      Group ID (TEMP):&nbsp;
-      <input
-        id="field_gid"
-        className="long"
-        type="text"
-      />
-
-      <button onclick="getGroup()">retrieve</button>
-    </div>
+  <body onload="getGID()">
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class = 'div_background_of_page'>
       <div id = 'track_page_header' class = 'div_page_header'>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50" onclick="loadTrackSearch()">
       </div>
       <br>
 
@@ -63,9 +51,11 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function getGroup() {
+  var aidsList = [];
+  var alidsList = [];
+  var tidList = [];
+    function getGroup(gid) {
       //null safety later
-      var gid = document.getElementById("field_gid").value;
       var url = "http://localhost:8000/getGroup2.php?q=" + gid;
 
       downloadUrl(url, function(data) {
@@ -84,6 +74,10 @@
         document.getElementById('type').innerHTML += type;
         document.getElementById('group').style.display = "inherit";
 
+        aidsList = [];
+        alidsList = [];
+        tidList = [];
+
         var tracks = xml.documentElement.getElementsByTagName('track');
         if (tracks != null){
           for (x of tracks) {
@@ -91,6 +85,16 @@
             var names = x.getAttribute('title');
             document.getElementById('tracks_list').innerHTML += "<li>"+ names +"</li>";
           }
+          var g = document.getElementById('tracks_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(tidList[index]);
+               			localStorage.setItem('passingTID', tidList[index]);
+               			window.location.href = "viewTrack.html";
+                	}
+            	})(i);
+        	}
         }
 
 
@@ -102,6 +106,16 @@
             console.log(names);
             document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
           }
+          var g = document.getElementById('artist_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingAID', aidsList[index]);
+               			window.location.href = "viewArtist.html";
+                	}
+            	})(i);
+        	}
         }
 
         var albums = xml.documentElement.getElementsByTagName('album');
@@ -112,6 +126,16 @@
             var names = x.getAttribute('name');
             document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
           }
+          var g = document.getElementById('album_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingALID', alidsList[index]);
+               			window.location.href = "viewAlbum.html";
+                	}
+            	})(i);
+        	}
         }
       });
     }
@@ -131,6 +155,15 @@
         request.open('GET', url, true);
         request.send(null);
         return 0;
+    }
+
+    function loadTrackSearch(){
+      window.location.href = "trackSearchPage.html";
+    }
+
+    function getGID(){
+      var thisitem = localStorage.getItem('passingGID');
+      getGroup(thisitem);
     }
 
     function doNothing() {}
