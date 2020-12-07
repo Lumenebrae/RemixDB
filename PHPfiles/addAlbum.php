@@ -7,7 +7,7 @@ $AID = $inputArray[0];
 $GID = $inputArray[1];
 $name = $inputArray[2];
 
-$con = mysqli_connect('127.0.0.1', "Lumenebrae", 'bombkirby9bombkirby9', 'cs350');
+$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }
