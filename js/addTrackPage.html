@@ -180,7 +180,7 @@
           var xml = data.responseXML;
           console.log(xml);
           if (xml){
-            localStorage.setItem('passingTID', xml.documentElement.getElementsByTagName('id')[0]);
+            localStorage.setItem('passingTID', xml.documentElement.getElementsByTagName('id')[0].getAttribute("id"));
             window.location.href = "viewTrack.html";
           }
         });
