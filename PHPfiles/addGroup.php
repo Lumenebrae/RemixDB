@@ -27,12 +27,15 @@ try {
     $row = @mysqli_fetch_assoc($result);
     mysqli_commit($con);
 
-    //send the trackID back
+    //send the groupID back
     header('Access-Control-Allow-Origin: *');
     header("Content-type: text/xml");
-    echo '<id>';
+    echo "<?xml version='1.0' ?>";
+    echo '<info>';
+    echo '<id ';
     echo 'id="' . $row['id'] . '" ';
-    echo '</id>';
+    echo '/>';
+    echo '</info>';
 
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);

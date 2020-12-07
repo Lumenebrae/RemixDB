@@ -114,7 +114,7 @@
           type="text"
         />
         <br /> <br />
-        Members (1,2...,):&nbsp;
+        Members (1,2,...,):&nbsp;
         <input
           id="field_groupmembers"
           className="long"
@@ -149,8 +149,8 @@
           type="text"
         />
         <br /> <br />
-        <button onclick="addAlbum()">Add Album</button>
       </form>
+      <button onclick="addAlbum()">Add Album</button>
     </div>
   </div>
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
@@ -163,25 +163,30 @@
     var SID = []
 
     function addTrack() { //Page -> PHP -> MySQL -> PHP -> Page -]
-      //null safety later
-      //var user = document.getElementById("field_uid").value;
-      var user = 1;
-      var trackname = document.getElementById("field_trackname").value;
-      var length = document.getElementById("field_tracklength").value;
-      var genre = document.getElementById("field_trackgenre").value;
-      var AID = document.getElementById("field_trackAIDs").value;
-      var GID = document.getElementById("field_trackGIDs").value;
-	    var ALID = document.getElementById("field_trackALIDs").value;
-      var transformedID = document.getElementById("field_trackTransformedIDs").value;
-      var originalID = document.getElementById("field_trackSourceIDs").value;
-
-      //if (user && trackname){        
+      if (document.getElementById("field_trackname").value){     
+        //var user = document.getElementById("field_uid").value;
+        var user = 1;
+        var trackname = document.getElementById("field_trackname").value;
+        var length = document.getElementById("field_tracklength").value;
+        var genre = document.getElementById("field_trackgenre").value;
+        var AID = document.getElementById("field_trackAIDs").value;
+        var GID = document.getElementById("field_trackGIDs").value;
+        var ALID = document.getElementById("field_trackALIDs").value;
+        var transformedID = document.getElementById("field_trackTransformedIDs").value;
+        var originalID = document.getElementById("field_trackSourceIDs").value;
+   
         var url = "http://localhost:8000/addTrack.php?q=" + trackname + "_" + length + "_" + genre + "_" + user + "_" + AID + "_" + GID + "_" + ALID + "_" + transformedID + "_" + originalID;
         downloadUrl(url, function(data) {
-        var xml = data.responseXML;
-        console.log(xml);
+          var xml = data.responseXML;
+          console.log(xml);
+          if (xml){
+            localStorage.setItem('passingTID', xml.documentElement.getElementsByTagName('id')[0]);
+            window.location.href = "viewTrack.html";
+          }
         });
-      //}
+      } else {
+        alert("please provide the track title")
+      }
     }
 
     function addArtist() { //Page -> PHP -> MySQL -> PHP -> Page -]
@@ -189,10 +194,16 @@
         var artistname = document.getElementById("field_artistname").value;
         var url = "http://localhost:8000/addArtist.php?q=" + artistname;
         downloadUrl(url, function(data) {
-        var xml = data.responseXML;
-        console.log(xml);
+          var xml = data.responseXML;
+          var ids = xml.documentElement.getElementsByTagName('id');
+          if (ids != null){
+            document.getElementById("field_trackAIDs").value += ids[0].getAttribute("id");
+            document.getElementById("field_trackAIDs").value += ",";
+            document.getElementById("field_groupmembers").value += ids[0].getAttribute("id");
+            document.getElementById("field_groupmembers").value += ",";
+          } 
+          else {alert("oops!");}
         });
-        document.getElementById("field_trackAIDs").value += ",";
       }
       else {
         document.getElementById("field_artistname").value = "";
@@ -211,8 +222,14 @@
       if (document.getElementById("field_groupname").value){
         var url = "http://localhost:8000/addGroup.php?q=" + groupname + "_" + groupyear + "_" + grouptype + "_" + groupmembers;
         downloadUrl(url, function(data) {
-        var xml = data.responseXML;
-        console.log(xml);
+          var xml = data.responseXML;
+          console.log(xml);
+          var ids = xml.documentElement.getElementsByTagName('id');
+          if (ids != null){
+            document.getElementById("field_trackGIDs").value += ids[0].getAttribute("id");
+            document.getElementById("field_trackGIDs").value += ",";
+          } 
+          else {alert("oops!");}
         });
       }
     }
@@ -225,10 +242,16 @@
       if (document.getElementById("field_albumtitle").value){
         var url = "http://localhost:8000/addAlbum.php?q=" + albumartist + "_" + albumgroup + "_" + albumtitle;
         downloadUrl(url, function(data) {
-        var xml = data.responseXML;
-        console.log(xml);
-        });
-      }
+          var xml = data.responseXML;
+          console.log(xml);
+          var ids = xml.documentElement.getElementsByTagName('id');
+          if (ids != null){
+            document.getElementById("field_trackALIDs").value += ids[0].getAttribute("id");
+            document.getElementById("field_trackALIDs").value += ",";
+          } 
+          else {alert("oops!");}
+        }
+      )};
       //will need to bunch these all up into one compound request
     }
 
