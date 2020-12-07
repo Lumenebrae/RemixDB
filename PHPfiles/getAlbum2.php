@@ -1,7 +1,7 @@
 <?php
 $q = $_REQUEST["q"];
 
-$connection=mysqli_connect ('127.0.0.1', "newuser", '', 'cs348');
+$connection=mysqli_connect ('127.0.0.1', "newuser", '', 'cs349');
 if (!$connection) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -11,17 +11,17 @@ $result1 = mysqli_query($connection, $query);
 
 
 //retrieve associated artists
-$query = "select distinct artistName from artists join trackcreditartist on artists.AID = trackcreditartist.AID join albumtracks on trackcreditartist.TID = albumtracks.TID where albumtracks.ALID = '".$q."'";
+$query = "select distinct Name, artists.AID from artists join trackcreditartist on artists.AID = trackcreditartist.AID join albumtracks on trackcreditartist.TID = albumtracks.TID where albumtracks.ALID = '".$q."'";
 $result2 = mysqli_query($connection, $query);
 
 //retrieve associated groups
-$query = "select distinct title from bandgroups join trackcreditgroup on bandgroups.GID = trackcreditgroup.GID join albumtracks on trackcreditgroup.TID = albumtracks.TID where albumtracks.ALID ='".$q."'";
+$query = "select distinct Name, bandgroups.GID from bandgroups join trackcreditgroup on bandgroups.GID = trackcreditgroup.GID join albumtracks on trackcreditgroup.TID = albumtracks.TID where albumtracks.ALID ='".$q."'";
 $result3 = mysqli_query($connection, $query);
 
 
 
 //retrieve associated remixes. Should use a join later to access transformation type and artist
-$query = "select TrackNumber, Name from track join albumtracks on track.TID = albumtracks.TID where albumtracks.ALID = '".$q."' order by TrackNumber ASC";
+$query = "select track.TID, TrackNumber, Name from track join albumtracks on track.TID = albumtracks.TID where albumtracks.ALID = '".$q."' order by TrackNumber ASC";
 $result4 = mysqli_query($connection, $query);
 
 //retrieve associated sources. Should use a join later to access transformation type and artist
@@ -36,7 +36,7 @@ echo "<?xml version='1.0' ?>";
 echo '<info>';
 echo '<album ';
 echo 'ALID="' . $row['ALID'] . '" ';
-echo 'name="' . $row['albumName'] . '" ';
+echo 'name="' . $row['Name'] . '" ';
 echo '/>';
 
 
@@ -44,7 +44,8 @@ if ($result2) {
     while ($row = @mysqli_fetch_assoc($result2)){
         // Add to XML document node
         echo '<artist ';
-        echo 'artistName="' . $row['artistName'] . '" ';
+        echo 'artistName="' . $row['Name'] . '" ';
+        echo 'AID="' . $row['AID'] . '" ';
         echo '/>';
     }
 }
@@ -54,7 +55,8 @@ if ($result3) {
     while ($row = @mysqli_fetch_assoc($result3)){
         // Add to XML document node
         echo '<group ';
-        echo 'name="' . $row['title'] . '" ';
+        echo 'name="' . $row['Name'] . '" ';
+        echo 'GID="' . $row['GID'] . '" ';
         echo '/>';
     }
 }
@@ -64,6 +66,7 @@ if ($result4) {
         // Add to XML document node
         echo '<track ';
         echo 'title="' . $row['Name'] . '" ';
+        echo 'TID="' . $row['TID'] . '" ';
         echo '/>';
 
     }

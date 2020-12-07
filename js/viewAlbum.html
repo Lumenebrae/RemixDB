@@ -5,24 +5,13 @@
   </head>
 
 
-  <body>
+  <body onload="getALID()">
 
-    <div>
-
-      Album ID (TEMP):&nbsp;
-      <input
-        id="field_tid"
-        className="long"
-        type="text"
-      />
-
-      <button onclick="getAlbum()">retrieve</button>
-    </div>
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class = 'div_background_of_page'>
       <div id = 'album_page_header' class = 'div_page_header'>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50" onclick="loadTrackSearch()">
       </div>
       <br>
 
@@ -52,9 +41,10 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function getAlbum() {
-      //null safety later
-      var tid = document.getElementById("field_tid").value;
+  var aidsList = [];
+  var gidsList = [];
+  var tidList = [];
+    function getAlbum(tid) {
       var url = "http://localhost:8000/getAlbum2.php?q=" + tid;
 
       downloadUrl(url, function(data) {
@@ -67,6 +57,10 @@
         //document.getElementById('album').style.display = "inherit";
         //document.getElementById('album_title').innerHTML += title;
 
+        aidsList = [];
+        gidsList = [];
+        tidList = [];
+
         //artist and group info
         var artists = xml.documentElement.getElementsByTagName('artist');
         if (artists != null){
@@ -74,8 +68,20 @@
             document.getElementById('artists').style.display = "inherit";
             var names = x.getAttribute('artistName');
             console.log(names);
+            aidsList.push(x.getAttribute('AID'));
             document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('artist_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingAID', aidsList[index]);
+               			window.location.href = "viewArtist.html";
+                	}
+            	})(i);
+        	}
         }
 
         var groups = xml.documentElement.getElementsByTagName('group');
@@ -86,8 +92,20 @@
             /*<div id = 'group_title'>Title: </div>
             <div id = 'group_year'>Year Formed: </div>
             <div id = 'group_type'>Type: </div>*/
+            gidsList.push(x.getAttribute('GID'));
             document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('group_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(gidsList[index]);
+               			localStorage.setItem('passingGID', gidsList[index]);
+               			window.location.href = "viewGroup.html";
+                	}
+            	})(i);
+        	}
         }
 
         var tracks = xml.documentElement.getElementsByTagName('track');
@@ -95,8 +113,20 @@
           for (x of tracks) {
             document.getElementById('tracks').style.display = "inherit";
             var names = x.getAttribute('title');
+            tidList.push(x.getAttribute('TID'));
             document.getElementById('tracks_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('tracks_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(tidList[index]);
+               			localStorage.setItem('passingTID', tidList[index]);
+               			window.location.href = "viewTrack.html";
+                	}
+            	})(i);
+        	}
         }
       });
     }
@@ -120,6 +150,13 @@
 
     function doNothing() {}
 
+    function loadTrackSearch(){
+      window.location.href = "trackSearchPage.html";
+    }
 
+    function getALID(){
+      var thisitem = localStorage.getItem('passingALID');
+      getAlbum(thisitem);
+    }
   </script>
 </html>

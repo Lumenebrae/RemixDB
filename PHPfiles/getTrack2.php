@@ -1,7 +1,7 @@
 <?php
 $q = $_REQUEST["q"];
 
-$connection=mysqli_connect ('127.0.0.1', "newuser", '', 'cs348');
+$connection=mysqli_connect ('127.0.0.1', "newuser", '', 'cs349');
 if (!$connection) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -51,7 +51,7 @@ if ($resultA) {
         // Add to XML document node
         echo '<artist ';
         echo 'AID="' . $row['AID'] . '" ';
-        echo 'artistName="' . $row['artistName'] . '" ';
+        echo 'artistName="' . $row['Name'] . '" ';
         echo '/>';
     }
 }
@@ -62,7 +62,7 @@ if ($resultG) {
         // Add to XML document node
         echo '<group ';
         echo 'GID="' . $row['GID'] . '" ';
-        echo 'name="' . $row['Title'] . '" ';
+        echo 'name="' . $row['Name'] . '" ';
         echo 'year="' . $row['YearFormed'] . '" ';
         echo 'type="' . $row['type'] . '" ';
         echo '/>';
@@ -74,7 +74,7 @@ if ($resultAL) {
         // Add to XML document node
         echo '<album ';
         echo 'ALID="' . $row['ALID'] . '" ';
-        echo 'name="' . $row['albumName'] . '" ';
+        echo 'name="' . $row['Name'] . '" ';
         echo '/>';
     }
 }

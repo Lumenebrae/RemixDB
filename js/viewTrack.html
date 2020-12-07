@@ -7,22 +7,12 @@
 
   <body onload="getTID()">
 
-    <div>
 
-      Track ID (TEMP):&nbsp;
-      <input
-        id="field_tid"
-        className="long"
-        type="text"
-      />
-
-      <button onclick="getTrack()">retrieve</button>
-    </div>
 
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
     <div class = 'div_background_of_page'>
       <div id = 'track_page_header' class = 'div_page_header'>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50" onclick="loadTrackSearch()">
       </div>
       <br>
 
@@ -76,9 +66,13 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function getTrack() {
+  var aidsList = [];
+  var gidsList = [];
+  var alidsList = [];
+  var remixList = [];
+  var sourceList = [];
+    function getTrack(tid) {
       //null safety later
-      var tid = document.getElementById("field_tid").value;
       var url = "http://localhost:8000/getTrack2.php?q=" + tid;
 
       downloadUrl(url, function(data) {
@@ -97,64 +91,125 @@
         document.getElementById('trac_genre').innerHTML += genre;
 
 
+        aidsList = [];
+        gidsList = [];
+        alidsList = [];
+        remixList = [];
+        sourceList = [];
 
         //artist and group info
         var artists = xml.documentElement.getElementsByTagName('artist');
         if (artists != null){
           for (x of artists) {
             document.getElementById('artists').style.display = "inherit";
-            var aid = x.getAttribute('AID');
             var names = x.getAttribute('artistName');
+            aidsList.push(x.getAttribute('AID'));
             console.log(names);
             document.getElementById('artist_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('artist_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingAID', aidsList[index]);
+               			window.location.href = "viewArtist.html";
+                	}
+            	})(i);
+        	}
+
         }
 
         var groups = xml.documentElement.getElementsByTagName('group');
         if (groups != null){
           for (x of groups) {
             document.getElementById('groups').style.display = "inherit";
-            var aid = x.getAttribute('GID');
             var names = x.getAttribute('name');
             var year = x.getAttribute('year');
             var type = x.getAttribute('type');
+            gidsList.push(x.getAttribute('GID'));
             /*<div id = 'group_title'>Title: </div>
             <div id = 'group_year'>Year Formed: </div>
             <div id = 'group_type'>Type: </div>*/
             document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('group_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(gidsList[index]);
+               			localStorage.setItem('passingGID', gidsList[index]);
+               			window.location.href = "viewGroup.html";
+                	}
+            	})(i);
+        	}
         }
 
         var albums = xml.documentElement.getElementsByTagName('album');
         if (albums != null){
           for (x of albums) {
             document.getElementById('albums').style.display = "inherit";
-            var aid = x.getAttribute('ALID');
             var names = x.getAttribute('name');
             /*<div id = 'group_title'>Title: </div>
             <div id = 'group_year'>Year Formed: </div>
             <div id = 'group_type'>Type: </div>*/
+            alidsList.push(x.getAttribute('ALID'));
             document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
           }
+
+          var g = document.getElementById('album_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingALID', alidsList[index]);
+               			window.location.href = "viewAlbum.html";
+                	}
+            	})(i);
+        	}
         }
         //remix info
         var remixes = xml.documentElement.getElementsByTagName('remix');
         if (remixes != null){
           for (x of remixes) {
             document.getElementById('remixes').style.display = "inherit";
-            tid = x.getAttribute('TID');
             title = x.getAttribute('title');
+            remixList.push(x.getAttribute('TID'));
             document.getElementById('remixes_list').innerHTML += "<li>"+ title +"</li>";
           }
+
+          var g = document.getElementById('remixes_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingTID', remixList[index]);
+               			window.location.href = "viewTrack.html";
+                	}
+            	})(i);
+        	}
         }
         var sources = xml.documentElement.getElementsByTagName('source');
         if (sources != null){
           for (x of sources) {
             document.getElementById('sources').style.display = "inherit";
-            tid = x.getAttribute('TID');
             title = x.getAttribute('title');
+            sourceList.push(x.getAttribute('TID'));
             document.getElementById('sources_list').innerHTML += "<li>"+ title +"</li>";
           }
+
+          var g = document.getElementById('sources_list');
+        	for (var i = 0, len = g.children.length; i < len; i++){
+            	(function(index){
+               		g.children[i].onclick = function(){
+               			console.log(aidsList[index]);
+               			localStorage.setItem('passingTID', sourceList[index]);
+               			window.location.href = "viewTrack.html";
+                	}
+            	})(i);
+        	}
         }
       });
     }
@@ -176,14 +231,13 @@
         return 0;
     }
 
-    function getTID(){
-
-      var thisitem = localStorage.getItem('passingTID');
-
-      if(thisitem != 'undefined'){
-        document.getElementById("field_tid").value = thisitem;
+    function loadTrackSearch(){
+      window.location.href = "trackSearchPage.html";
     }
-      getTrack();
+
+    function getTID(){
+      var thisitem = localStorage.getItem('passingTID');
+      getTrack(thisitem);
     }
 
     function doNothing() {}
