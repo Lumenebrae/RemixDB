@@ -49,9 +49,9 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    function getArtist() {
+    function getArtist(aid) {
       //null safety later
-      var aid = document.getElementById("field_aid").value;
+      //var aid = document.getElementById("field_aid").value;
       var url = "http://localhost:8000/getArtist2.php?q=" + aid;
 
       downloadUrl(url, function(data) {

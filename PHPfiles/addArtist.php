@@ -4,7 +4,7 @@
 $q = $_REQUEST["q"];
 $inputArray = explode("_", $q);
 
-$con = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
+$con = mysqli_connect('127.0.0.1', "Lumenebrae", 'bombkirby9bombkirby9', 'cs350');
 if (!$con) {
     die('Not connected : ' . mysqli_connect_error());
 }

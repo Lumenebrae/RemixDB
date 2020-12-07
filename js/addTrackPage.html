@@ -10,7 +10,7 @@
 <div class = 'div_background_of_page'>
   <div id = 'track_page_header' class = 'div_page_header'>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Purdue_Boilermakers_logo.svg/1200px-Purdue_Boilermakers_logo.svg.png" width="60" height="50" onclick="loadTrackSearch()">
-    <a href="trackSearchPage.html">RemixDB</a>
+    Add a Track
   </div>
   <br>
   <div class = 'div_background_of_page'>
@@ -273,6 +273,9 @@
         return 0;
     }
 
+    function loadTrackSearch(){
+      window.location.href = "trackSearchPage.html";
+    }
     function doNothing() {}
 
 
