@@ -35,9 +35,11 @@ try {
     //send the trackID back
     header('Access-Control-Allow-Origin: *');
     header("Content-type: text/xml");
-    echo '<id>';
+    echo '<info>';
+    echo '<id ';
     echo 'id="' . $row['id'] . '" ';
-    echo '</id>';
+    echo '/>';
+    echo '</info>';
 
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);

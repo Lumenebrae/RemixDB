@@ -80,5 +80,3 @@ if (!empty($resultS)) {
 }
 
 echo '</info>';
-
-

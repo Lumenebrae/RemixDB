@@ -20,19 +20,30 @@ try {
 
     $query = "SET @id = ''"; //create output variable
     mysqli_query($con, $query);
-    $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
+    if ($type == "" && $yearFormed == ""){
+        $query = "CALL MasterAddGroup('".$name."', null, null, '".$members."', @id)";
+    }else if($type == ""){
+        $query = "CALL MasterAddGroup('".$name."','".$yearFormed."', null, '".$members."', @id)";
+    }else if($yearFormed == ""){
+        $query = "CALL MasterAddGroup('".$name."', null,'".$type."','".$members."', @id)";
+    }else{
+        $query = "CALL MasterAddGroup('".$name."','".$yearFormed."','".$type."','".$members."', @id)";
+    }
     mysqli_query($con, $query);
     $query = "SELECT @id AS id"; // fetch the output variable
     $result = mysqli_query($con, $query);
     $row = @mysqli_fetch_assoc($result);
     mysqli_commit($con);
 
-    //send the trackID back
+    //send the groupID back
     header('Access-Control-Allow-Origin: *');
     header("Content-type: text/xml");
-    echo '<id>';
+    echo "<?xml version='1.0' ?>";
+    echo '<info>';
+    echo '<id ';
     echo 'id="' . $row['id'] . '" ';
-    echo '</id>';
+    echo '/>';
+    echo '</info>';
 
 } catch (mysqli_sql_exception $exception){
     mysqli_rollback($con);
