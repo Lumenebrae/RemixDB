@@ -114,7 +114,7 @@
           type="text"
         />
         <br /> <br />
-        Members (1,2...,):&nbsp;
+        Members (1,2,...,):&nbsp;
         <input
           id="field_groupmembers"
           className="long"
@@ -149,8 +149,8 @@
           type="text"
         />
         <br /> <br />
-        <button onclick="addAlbum()">Add Album</button>
       </form>
+      <button onclick="addAlbum()">Add Album</button>
     </div>
   </div>
   <p class="meme">JavaScript makes HTML pages more dynamic and interactive.&#x263A;</p>
@@ -190,9 +190,15 @@
         var url = "http://localhost:8000/addArtist.php?q=" + artistname;
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
-        console.log(xml);
+        var ids = xml.documentElement.getElementsByTagName('id');
+        if (ids != null){
+          document.getElementById("field_trackAIDs").value += ids[0].getAttribute("id");
+          document.getElementById("field_trackAIDs").value += ",";
+          document.getElementById("field_groupmembers").value += ids[0].getAttribute("id");
+          document.getElementById("field_groupmembers").value += ",";
+        } 
+        else {alert("oops!");}
         });
-        document.getElementById("field_trackAIDs").value += ",";
       }
       else {
         document.getElementById("field_artistname").value = "";
@@ -213,6 +219,12 @@
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);
+        var ids = xml.documentElement.getElementsByTagName('id');
+        if (ids != null){
+          document.getElementById("field_trackGIDs").value += ids[0].getAttribute("id");
+          document.getElementById("field_trackGIDs").value += ",";
+        } 
+        else {alert("oops!");}
         });
       }
     }
@@ -227,8 +239,14 @@
         downloadUrl(url, function(data) {
         var xml = data.responseXML;
         console.log(xml);
-        });
-      }
+        var ids = xml.documentElement.getElementsByTagName('id');
+        if (ids != null){
+          document.getElementById("field_trackALIDs").value += ids[0].getAttribute("id");
+          document.getElementById("field_trackALIDs").value += ",";
+        } 
+        else {alert("oops!");}
+        }
+      )};
       //will need to bunch these all up into one compound request
     }
 
