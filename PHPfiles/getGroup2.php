@@ -1,7 +1,7 @@
 <?php
 $q = $_REQUEST["q"];
 
-$connection = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
+$connection = mysqli_connect('127.0.0.1', "newuser", '', 'cs349');
 if (!$connection) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -14,7 +14,7 @@ if (!$resultT) { #does this differentiate between null and empty? the answer: it
 }
 
 //retrieve associated artists
-$query = "select distinct a.Name from artists as a join member on a.AID = member.AID where member.GID ='".$q."'";
+$query = "select distinct a.Name, a.AID from artists as a join member on a.AID = member.AID where member.GID ='".$q."'";
 $result1 = mysqli_query($connection, $query);
 
 
@@ -24,7 +24,7 @@ $result2 = mysqli_query($connection, $query);
 
 
 //retrieve associated albums
-$query = "select distinct a.Name from albums as a where a.GID = '".$q."'";
+$query = "select distinct a.Name, a.ALID from albums as a where a.GID = '".$q."'";
 $result3 = mysqli_query($connection, $query);
 
 
@@ -48,6 +48,7 @@ if ($result1) {
         // Add to XML document node
         echo '<artist ';
         echo 'name="' . $row['Name'] . '" ';
+        echo 'AID="' . $row['AID'] . '" ';
         echo '/>';
     }
 }
@@ -58,6 +59,7 @@ if ($result2) {
         // Add to XML document node
         echo '<track ';
         echo 'title="' . $row['Name'] . '" ';
+        echo 'TID="' . $row['TID'] . '" ';
         echo '/>';
 
     }

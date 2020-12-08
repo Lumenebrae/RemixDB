@@ -1,7 +1,7 @@
 <?php
 $q = $_REQUEST["q"];
 
-$connection = mysqli_connect('127.0.0.1', "newuser", '', 'cs348');
+$connection = mysqli_connect('127.0.0.1', "newuser", '', 'cs349');
 if (!$connection) {
     die('Not connected : ' . mysqli_connect_error());
 }
@@ -19,12 +19,12 @@ $result1 = mysqli_query($connection, $query);
 
 
 //retrieve associated groups
-$query = "select distinct g.Name from bandgroups as g join member on g.GID = member.GID where member.AID ='".$q."'";
+$query = "select distinct g.Name, g.GID from bandgroups as g join member on g.GID = member.GID where member.AID ='".$q."'";
 $result2 = mysqli_query($connection, $query);
 
 
 //retrieve associated albums
-$query = "select distinct a.Name from albums as a join artists on a.AID = artists.AID where artists.AID = '".$q."'";
+$query = "select distinct a.Name, a.ALID from albums as a join artists on a.AID = artists.AID where artists.AID = '".$q."'";
 $result3 = mysqli_query($connection, $query);
 
 
@@ -46,6 +46,7 @@ if ($result1) {
         // Add to XML document node
         echo '<track ';
         echo 'title="' . $row['Name'] . '" ';
+        echo 'TID="' . $row['TID'] . '" ';
         echo '/>';
 
     }

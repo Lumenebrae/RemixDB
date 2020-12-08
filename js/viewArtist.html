@@ -49,6 +49,9 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+  var alidsList = [];
+  var gidsList = [];
+  var tidList = [];
     function getArtist(aid) {
       //null safety later
       //var aid = document.getElementById("field_aid").value;
@@ -75,6 +78,7 @@
           for (x of tracks) {
             document.getElementById('tracks').style.display = "inherit";
             var names = x.getAttribute('title');
+            tidList.push(x.getAttribute('TID'));
             document.getElementById('tracks_list').innerHTML += "<li>"+ names +"</li>";
           }
           var g = document.getElementById('tracks_list');
@@ -94,8 +98,8 @@
         if (groups != null){
           for (x of groups) {
             document.getElementById('groups').style.display = "inherit";
-            var aid = x.getAttribute('GID');
             var names = x.getAttribute('name');
+            gidsList.push(x.getAttribute('GID'));
             document.getElementById('group_list').innerHTML += "<li>"+ names +"</li>";
           }
           var g = document.getElementById('group_list');
@@ -114,15 +118,14 @@
         if (albums != null){
           for (x of albums) {
             document.getElementById('albums').style.display = "inherit";
-            var aid = x.getAttribute('ALID');
             var names = x.getAttribute('name');
+            alidsList.push(x.getAttribute('ALID'));
             document.getElementById('album_list').innerHTML += "<li>"+ names +"</li>";
           }
           var g = document.getElementById('album_list');
         	for (var i = 0, len = g.children.length; i < len; i++){
             	(function(index){
                		g.children[i].onclick = function(){
-               			console.log(aidsList[index]);
                			localStorage.setItem('passingALID', alidsList[index]);
                			window.location.href = "viewAlbum.html";
                 	}
